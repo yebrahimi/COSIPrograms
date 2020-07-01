@@ -1,1 +1,1 @@
-# Collection of programs for automated COSI analysis
+# Collection of Programs for Automated COSI Analysis
