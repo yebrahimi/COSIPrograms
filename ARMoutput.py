@@ -28,6 +28,10 @@ FileName = ""
 if args.filename != "":
   FileName = args.filename
 
+X = float(args.xcoordinate)
+Y = float(args.ycoordinate)
+Z = float(args.zcoordinate)
+
 if int(args.minevents) < 1000000:
   MinEvents = int(args.minevents)
 
@@ -62,7 +66,7 @@ for i in range(0,4):
     HistARMlist[i] = M.TH1D("ARM Plot of Compton events" + str(i), "ARM Plot of Compton Events", 200, -180, 180)
     
 # Load file
-for y in range(0,4):
+for y in range(0,2):
     Reader = M.MFileEventsTra()
     if Reader.Open(M.MString(trafiles[y])) == False:
         print("Unable to open file " + FileName + ". Aborting!")
@@ -73,15 +77,15 @@ for y in range(0,4):
 #Fill Histogram values
     while True:
         Event = Reader.GetNextEvent()
-    if not Event:
-        break
+        if not Event:
+            break
 
-    if Event.GetType() == M.MPhysicalEvent.c_Compton:
-      ARM_value = Event.GetARMGamma(((M.MVector(args.xcoordinate, args.ycoordinate, args.zcoordinate)), M.MCoordinateSystem.c_Cartesian3D)*(180/pi));
-      print(ARM_value)
-      HistARMlist[y].Fill(Event.GetARMGamma(M.MVector(args.xcoordinate, args.ycoordinate, args.zcoordinate), M.MCoordinateSystem.c_Cartesian3D)*(180/pi));
-    elif Event.GetType() == M.MPhysicalEvent.c_Photo:
-      pass
+        if Event.GetType() == M.MPhysicalEvent.c_Compton:
+            ARM_value = Event.GetARMGamma(((M.MVector(X, Y, Z)), M.MCoordinateSystem.c_Cartesian3D)*(180/pi));
+            print(ARM_value)
+            HistARMlist[y].Fill(Event.GetARMGamma(M.MVector(X, Y, Z), M.MCoordinateSystem.c_Cartesian3D)*(180/pi));
+        elif Event.GetType() == M.MPhysicalEvent.c_Photo:
+            pass
 
 #############################################################################################################################################################################
 
