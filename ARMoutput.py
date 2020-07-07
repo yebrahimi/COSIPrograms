@@ -60,11 +60,16 @@ else:
   print("Unable to load geometry " + GeometryName + " - Aborting!")
   quit()
     
-#Create Histogram list 
+#Create Histogram list and color 
 HistARMlist = [None, None, None, None]
 for i in range(0,4):
     HistARMlist[i] = M.TH1D("ARM Plot of Compton events" + str(i), "ARM Plot of Compton Events", 200, -180, 180)
-    
+
+HistARMlist[0].SetLineColor(M.kRed)
+HistARMlist[1].SetLineColor(M.kGreen)
+HistARMlist[2].SetLineColor(M.kBlue)
+HistARMlist[3].SetLineColor(M.kBlack)
+
 # Load file
 for y in range(0,4):
     Reader = M.MFileEventsTra()
@@ -83,7 +88,6 @@ for y in range(0,4):
         if Event.GetType() == M.MPhysicalEvent.c_Compton:
             ARM_value = Event.GetARMGamma((M.MVector(X, Y, Z)), M.MCoordinateSystem.c_Cartesian3D)*(180/pi);
             print(ARM_value)
-            HistARMlist[y].SetLineColor()
             HistARMlist[y].Fill(Event.GetARMGamma(M.MVector(X, Y, Z), M.MCoordinateSystem.c_Cartesian3D)*(180/pi));
         elif Event.GetType() == M.MPhysicalEvent.c_Photo:
             pass
@@ -100,6 +104,7 @@ CanvasARM.cd()
 HistStack.Draw()
 CanvasARM.Update()
 
+print("Classic method in Red. Bayesian method in Green. MLP method in Blue. RF method in Black.")
 
 # Prevent the canvases from being closed
 import os
