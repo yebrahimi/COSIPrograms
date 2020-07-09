@@ -24,7 +24,6 @@ parser.add_argument('-z', '--zcoordinate', type=float, default='64', help='Z coo
 
 args = parser.parse_args()
 
-FileName = ""
 if args.filename != "":
   FileName = args.filename
 
@@ -36,18 +35,10 @@ if int(args.minevents) < 1000000:
   MinEvents = int(args.minevents)
 
 trafiles = [None, None, None, None]
-print(args.filename)
 f = open(args.filename, "r")
 for x in range(0,4):
-    trafiles[x] = f.readline()
+    trafiles[x] = str(f.readline()).strip()
     print(trafiles[x])
-
-
-trafiles[0] = "/volumes/selene/users/rhea/revan/Run043.Cs137/Run043.Cs137_Classic.tra"
-trafiles[1] = "/volumes/selene/users/rhea/revan/Run043.Cs137/Run043.Cs137_Bayes.tra"
-trafiles[2] = "/volumes/selene/users/rhea/revan/Run043.Cs137/smaller.Run043.Cs137_MLP.tra"
-trafiles[3] = "/volumes/selene/users/rhea/revan/Run043.Cs137/Run043.Cs137_RF.tra"
-
 
 
 ###################################################################################################################################################################################
@@ -80,8 +71,10 @@ for y in range(0,4):
         print("File " + FileName + " loaded!")
 
 #Fill Histogram values
-    while True:
+    counter = 0 
+    while counter <= 1000000:
         Event = Reader.GetNextEvent()
+        counter = counter + 1
         if not Event:
             break
 
