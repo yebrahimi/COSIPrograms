@@ -16,7 +16,7 @@ G.Initialize()
 GeometryName = "/volumes/selene/users/rhea/geomega/COSI.DetectorHead.geo.setup"
 
 parser = argparse.ArgumentParser(description='Create comparison of ARM plots from event reconstruction files and source location.')
-parser.add_argument('-f', '--filename', default='ComptonTrackIdentification.p1.sim.gz', help='File name used for calculating ARM')
+parser.add_argument('-f', '--filename', default='ComptonTrackIdentification.p1.sim.gz', help='txt file name used for calculating ARM. Contains paths to tra files.')
 parser.add_argument('-m', '--minevents', default='1000000', help='Minimum number of events to use')
 parser.add_argument('-x', '--xcoordinate', type=float, default='26.1', help='X coordinate of position in 3D Cartesian coordinates')
 parser.add_argument('-y', '--ycoordinate', type=float, default='0.3', help='Y coordinate of position in 3D Cartesian coordinates')
