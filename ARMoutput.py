@@ -97,7 +97,7 @@ CanvasARM.cd()
 HistStack.Draw()
 CanvasARM.Update()
 
-print("Classic method in Red. Bayesian method in Green. MLP method in Blue. RF method in Black.")
+print("COLOR CODE: Classic method in Red. Bayesian method in Green. MLP method in Blue. RF method in Black.")
 
 # Prevent the canvases from being closed
 import os
