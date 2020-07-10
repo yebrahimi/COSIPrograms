@@ -51,11 +51,11 @@ else:
   print("Unable to load geometry " + GeometryName + " - Aborting!")
   quit()
     
-#Create Histogram list and color 
+#Create Histogram list and color
 HistARMlist = [None, None, None, None]
 for i in range(0,4):
     HistARMlist[i] = M.TH1D("ARM Plot of Compton events" + str(i), "ARM Plot of Compton Events", 200, -180, 180)
-
+    
 HistARMlist[0].SetLineColor(M.kRed)
 HistARMlist[1].SetLineColor(M.kGreen)
 HistARMlist[2].SetLineColor(M.kBlue)
@@ -89,15 +89,26 @@ for y in range(0,4):
 
 #Draw Histogram
 CanvasARM = M.TCanvas()
-#HistARMlist[m].Draw()
-HistStack = M.THStack("ID", "ARM Plot of Compton Events")
+#HistStack = M.THStack("ID", "ARM Plot of Compton Events")
 for m in range(0,4):
-    HistStack.Add(HistARMlist[m])
+    #HistStack.Add(HistARMlist[m])
+    HistARMlist[m].Draw("same")
 CanvasARM.cd()
-HistStack.Draw()
+#HistStack.Draw()
 CanvasARM.Update()
 
-print("COLOR CODE: Classic method in Red. Bayesian method in Green. MLP method in Blue. RF method in Black.")
+legend = M.TLegend(0.75, 0.75, 0.95, 0.95)
+legend.SetHeader("Analysis Methods and RMS Values", "C")
+legend.SetNColumns(2)
+legend.AddEntry("HistARMlist[0]", "Classic Method", "l")
+#legend.AddEntry("HistARMlist[0]", str(HistARMlist[0].GetRMS()), "l")
+legend.AddEntry("HistARMlist[1]", "Bayes Method", "l")
+#legend.AddEntry("HistARMlist[0]", str(HistARMlist[1].GetRMS()), "l")
+legend.AddEntry("HistARMlist[2]", "MLP Method", "l")
+#legend.AddEntry("HistARMlist[0]", str(HistARMlist[2].GetRMS()), "l")
+legend.AddEntry("HistARMlist[3]", "RF Method", "l")
+#legend.AddEntry("HistARMlist[0]", str(HistARMlist[3].GetRMS()), "l")
+legend.Draw()
 
 # Prevent the canvases from being closed
 import os
