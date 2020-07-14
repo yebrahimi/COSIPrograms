@@ -89,26 +89,31 @@ for y in range(0,4):
 
 #Draw Histogram
 CanvasARM = M.TCanvas()
-#HistStack = M.THStack("ID", "ARM Plot of Compton Events")
+print("Drawing ARM histograms for each method...")
 for m in range(0,4):
-    #HistStack.Add(HistARMlist[m])
     HistARMlist[m].Draw("same")
 CanvasARM.cd()
-#HistStack.Draw()
-CanvasARM.Update()
+#CanvasARM.Update()
 
-legend = M.TLegend(0.75, 0.75, 0.95, 0.95)
+print("Creating legend...")
+legend = M.TLegend(0.75, 0.75, 1, 1)
 legend.SetHeader("Analysis Methods and RMS Values", "C")
-legend.SetNColumns(2)
-legend.AddEntry("HistARMlist[0]", "Classic Method", "l")
-#legend.AddEntry("HistARMlist[0]", str(HistARMlist[0].GetRMS()), "l")
-legend.AddEntry("HistARMlist[1]", "Bayes Method", "l")
-#legend.AddEntry("HistARMlist[0]", str(HistARMlist[1].GetRMS()), "l")
-legend.AddEntry("HistARMlist[2]", "MLP Method", "l")
-#legend.AddEntry("HistARMlist[0]", str(HistARMlist[2].GetRMS()), "l")
-legend.AddEntry("HistARMlist[3]", "RF Method", "l")
-#legend.AddEntry("HistARMlist[0]", str(HistARMlist[3].GetRMS()), "l")
+legend.AddEntry(HistARMlist[0], "Classic Method", "l")
+legend.AddEntry(HistARMlist[1], "Bayes Method", "l")
+legend.AddEntry(HistARMlist[2], "MLP Method", "l")
+legend.AddEntry(HistARMlist[3], "RF Method", "l")
 legend.Draw()
+
+print("printing RMS values...")
+RMS1 = M.TLatex()
+RMS1.SetTextSize(0.005)
+RMS1.DrawLatex(0.01, 0.73, "hello")
+
+#RMS = M.TText(0.1, 0.1, str(HistARMlist[0].GetRMS()))
+#RMS.SetTextSize(10)
+#RMS.Draw()
+
+CanvasARM.Update()
 
 # Prevent the canvases from being closed
 import os
