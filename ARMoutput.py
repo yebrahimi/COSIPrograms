@@ -113,15 +113,6 @@ legend.AddEntry(HistARMlist[3], str(HistARMlist[3].GetRMS()), "l")
 
 legend.Draw()
 
-#print("printing RMS values...")
-#RMS1 = M.TLatex()
-#RMS1.SetTextSize(0.02)
-#RMS1.DrawLatex(1, 3, "hello")
-
-#RMS = M.TText(0.1, 0.1, str(HistARMlist[0].GetRMS()))
-#RMS.SetTextSize(10)
-#RMS.Draw()
-
 CanvasARM.Update()
 
 # Prevent the canvases from being closed
