@@ -21,6 +21,8 @@ parser.add_argument('-m', '--minevents', default='1000000', help='Minimum number
 parser.add_argument('-x', '--xcoordinate', type=float, default='26.1', help='X coordinate of position in 3D Cartesian coordinates')
 parser.add_argument('-y', '--ycoordinate', type=float, default='0.3', help='Y coordinate of position in 3D Cartesian coordinates')
 parser.add_argument('-z', '--zcoordinate', type=float, default='64', help='Z coordinate of position in 3D Cartesian coordinates') 
+parser.add_argument('-l', '--logarithmic', type=str, default='no', help='If set to yes, displays ARM plot on a logarithmic-scaled y-axis.') 
+parser.add_argument('-e', '--energy', type=float, default='662', help='Peak energy value for source. Outputs ARM histograms with a +-1.5% energy window.')
 
 args = parser.parse_args()
 
@@ -30,6 +32,12 @@ if args.filename != "":
 X = float(args.xcoordinate)
 Y = float(args.ycoordinate)
 Z = float(args.zcoordinate)
+
+if args.logarithmic != "":
+    log = args.logarithmic
+
+low_e = 0.985 * float(args.energy)
+high_e = 1.015 * float(args.energy)
 
 if int(args.minevents) < 1000000:
   MinEvents = int(args.minevents)
@@ -78,7 +86,7 @@ for y in range(0,4):
         if not Event:
             break
 
-        if Event.GetType() == M.MPhysicalEvent.c_Compton:
+        if (Event.GetType() == M.MPhysicalEvent.c_Compton) and (low_e <= Event.Ei() <= high_e):
             ARM_value = Event.GetARMGamma((M.MVector(X, Y, Z)), M.MCoordinateSystem.c_Cartesian3D)*(180/pi);
             print(ARM_value)
             HistARMlist[y].Fill(Event.GetARMGamma(M.MVector(X, Y, Z), M.MCoordinateSystem.c_Cartesian3D)*(180/pi));
@@ -87,18 +95,23 @@ for y in range(0,4):
 
 #############################################################################################################################################################################
 
-#Draw Histogram
+#Draw Histogram and Legend
 CanvasARM = M.TCanvas()
 print("Drawing ARM histograms for each method...")
 for m in range(0,4):
-    HistARMlist[m].Draw("same")
+    if log == 'yes':
+        M.gPad.SetLogy()
+        HistARMlist[m].Draw("same")
+    else:
+        HistARMlist[m].Draw("same")
+
 CanvasARM.cd()
-#CanvasARM.Update()
 
 print("Creating legend...")
 legend = M.TLegend(0.75, 0.75, 1, 1)
 legend.SetHeader("Analysis Methods and RMS Values", "C")
 legend.SetNColumns(2)
+
 legend.AddEntry(HistARMlist[0], "Classic Method", "l")
 legend.AddEntry(HistARMlist[0], str(HistARMlist[0].GetRMS()), "l")
 
