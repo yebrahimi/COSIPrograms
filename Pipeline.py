@@ -1,5 +1,20 @@
 # Loop over all the data available
 
+import ROOT as M
+from pathlib import Path 
+from math import pi
+import argparse
+
+#################################################################################################################################################################################
+
+# Load MEGAlib into ROOT
+M.gSystem.Load("$(MEGALIB)/lib/libMEGAlib.so")
+
+# Initialize MEGAlib
+G = M.MGlobal()
+G.Initialize()
+
+GeometryName = "/volumes/data/users/olivia/COSI.DetectorHead.geo.setup"
 
 # 1. Convert the roa files to evta files with nuclearizer
 a) In root : nuclearizer -c /volumes/selene/COSI_2016/ER/Data/Nuclearizer_ER_Data.cfg
@@ -32,26 +47,6 @@ for i in TECHNIQUE:
 mnuclearizer is also an option if you want to run parallel threads. An example of an mnuclearizer command is:
 $ mnuclearizer -c Nuclearizer.cfg -n 19 -f RunTest*.sim
 Always set the nice level to 19 if you’d like to continue working on that computer and not have it heavily slowed down.
-
-
-
-
-import ROOT as M
-from pathlib import Path 
-from math import pi
-import argparse
-
-#################################################################################################################################################################################
-
-# Load MEGAlib into ROOT
-M.gSystem.Load("$(MEGALIB)/lib/libMEGAlib.so")
-
-# Initialize MEGAlib
-G = M.MGlobal()
-G.Initialize()
-
-# We are good to go ...
-GeometryName = "/volumes/selene/users/rhea/geomega/COSI.DetectorHead.geo.setup"
 
 
 # From Forwarded email: I think using a consistent amount of events should be OK, for example
