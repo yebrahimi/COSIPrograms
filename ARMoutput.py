@@ -95,15 +95,19 @@ for y in range(0,4):
 
 #############################################################################################################################################################################
 
-#Draw Histogram and Legend
+#Draw Histogram, Axis, Legend
 CanvasARM = M.TCanvas()
 print("Drawing ARM histograms for each method...")
 for m in range(0,4):
     if log == 'yes':
         M.gPad.SetLogy()
+        HistARMlist[0].SetTitle("ARM Plot of Compton Events; ARM [deg]; Counts [logarithmic];  ")
         HistARMlist[m].Draw("same")
     else:
+        HistARMlist[0].SetTitle("ARM Plot of Compton Events; ARM [deg]; Counts;  ")
         HistARMlist[m].Draw("same")
+HistARMlist[0].GetXaxis().CenterTitle()
+HistARMlist[0].GetYaxis().CenterTitle()
 
 CanvasARM.cd()
 
