@@ -1,5 +1,4 @@
-import ROOT as M
-from pathlib import Path 
+import ROOT as M 
 from math import pi
 import argparse
 
@@ -23,6 +22,7 @@ parser.add_argument('-y', '--ycoordinate', type=float, default='0.3', help='Y co
 parser.add_argument('-z', '--zcoordinate', type=float, default='64', help='Z coordinate of position in 3D Cartesian coordinates') 
 parser.add_argument('-l', '--logarithmic', type=str, default='no', help='If set to yes, displays ARM plot on a logarithmic-scaled y-axis.') 
 parser.add_argument('-e', '--energy', type=float, default='662', help='Peak energy value for source. Outputs ARM histograms with a +-1.5% energy window.')
+parser.add_argument('-t', '--title', type=str, default='ARM Plot for Compton Events', help='Title for ARM Plot')
 
 args = parser.parse_args()
 
@@ -41,6 +41,9 @@ high_e = 1.015 * float(args.energy)
 
 if int(args.minevents) < 1000000:
   MinEvents = int(args.minevents)
+
+if args.title != "":
+    title = args.title
 
 trafiles = [None, None, None, None]
 f = open(args.filename, "r")
@@ -62,7 +65,7 @@ else:
 #Create Histogram list and color
 HistARMlist = [None, None, None, None]
 for i in range(0,4):
-    HistARMlist[i] = M.TH1D("ARM Plot of Compton events" + str(i), "ARM Plot of Compton Events", 200, -180, 180)
+    HistARMlist[i] = M.TH1D("ARM Plot of Compton events" + str(i), title, 200, -180, 180)
     
 HistARMlist[0].SetLineColor(M.kRed)
 HistARMlist[1].SetLineColor(M.kGreen)
@@ -95,38 +98,50 @@ for y in range(0,4):
 
 #############################################################################################################################################################################
 
-#Draw Histogram, Axis, Legend
+#Draw Histogram, Set Up Canvas
 CanvasARM = M.TCanvas()
 print("Drawing ARM histograms for each method...")
 for m in range(0,4):
     if log == 'yes':
         M.gPad.SetLogy()
-        HistARMlist[0].SetTitle("ARM Plot of Compton Events; ARM [deg]; Counts [logarithmic];  ")
+        HistARMlist[0].GetYaxis().SetTitle("Counts [logarithmic]")
         HistARMlist[m].Draw("same")
     else:
-        HistARMlist[0].SetTitle("ARM Plot of Compton Events; ARM [deg]; Counts;  ")
+        HistARMlist[0].GetYaxis().SetTitle("Counts")
         HistARMlist[m].Draw("same")
+HistARMlist[0].SetTitle(title)
+HistARMlist[0].GetXaxis().SetTitle("ARM [deg]")
 HistARMlist[0].GetXaxis().CenterTitle()
 HistARMlist[0].GetYaxis().CenterTitle()
 
 CanvasARM.cd()
+CanvasARM.SetGridx()
 
+#Create Legend [Method, RMS Value, Peak Height, Total Count, FWHM]
 print("Creating legend...")
-legend = M.TLegend(0.75, 0.75, 1, 1)
-legend.SetHeader("Analysis Methods and RMS Values", "C")
-legend.SetNColumns(2)
+legend = M.TLegend(0.60, 0.10, 1, 0)
+legend.SetHeader("Analysis Methods, RMS Values, Total Count", "C")
+legend.SetNColumns(3)
 
 legend.AddEntry(HistARMlist[0], "Classic Method", "l")
 legend.AddEntry(HistARMlist[0], str(HistARMlist[0].GetRMS()), "l")
+#peak height
+legend.AddEntry(HistARMlist[0], str(HistARMlist[0].GetEntries()), "l") 
 
 legend.AddEntry(HistARMlist[1], "Bayes Method", "l")
 legend.AddEntry(HistARMlist[1], str(HistARMlist[1].GetRMS()), "l")
+#peak height
+legend.AddEntry(HistARMlist[1], str(HistARMlist[1].GetEntries()), "l")
 
 legend.AddEntry(HistARMlist[2], "MLP Method", "l")
 legend.AddEntry(HistARMlist[2], str(HistARMlist[2].GetRMS()), "l")
+#peak height
+legend.AddEntry(HistARMlist[2], str(HistARMlist[2].GetEntries()), "l")
 
 legend.AddEntry(HistARMlist[3], "RF Method", "l")
 legend.AddEntry(HistARMlist[3], str(HistARMlist[3].GetRMS()), "l")
+#peak height
+legend.AddEntry(HistARMlist[3], str(HistARMlist[3].GetEntries()), "l")
 
 legend.Draw()
 
