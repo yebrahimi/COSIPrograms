@@ -63,10 +63,12 @@ c) In "Measurement loader for ROA files" go to options and put specfic isotope.r
 
 "Example:"
 nuclearizer -c /volumes/selene/COSI_2016/ER/Data/Nuclearizer_ER_Data.cfg -C
-ModuleOptions.XmlTagMeasurementLoaderROA.FileName=/volumes/selene/COSI_2016/ER/Data/Run###.Isotope.roa.gz -C [the options
-to set the save file] -g [/volumes/data/users/olivia/COSI.DetectorHead.geo.setup] -a
+ModuleOptions.XmlTagMeasurementLoaderROA.FileName=volumes/selene/COSI_2016/ER/Data/Run###.Isotope.roa.gz -C [the options
+to set the save file] -g [volumes/data/users/olivia/COSI.DetectorHead.geo.setup] -a
 
     --the options to set the save file =''
+ 
+# *****Add code for naming roa and evta file uniquely; not "output.roa or output.evta"
 
 # 2. Create the 4 tra files for the different event reconstructions with revan
 a) In root : revan -c /volumes/selene/COSI_2016/ER/Sims/Revan_ER_TECHNIQUE.cfg #where TECHNIQUE = Bayes, Classic, MLP, or RF 
@@ -85,6 +87,7 @@ for i in TECHNIQUE:
   d) click 'File', 'Open', and input: output.evta.gz
   e) click 'Reconstruction', 'Start Event Reconstruction'
   
+  
 "Example:"
 TECHNIQUE = [Bayes, Classic, MLP, RF]
 for i in TECHNIQUE:
@@ -93,12 +96,7 @@ for i in TECHNIQUE:
   to set the save file] -g [volumes/data/users/olivia/COSI.DetectorHead.geo.setup] -a
   
       --the options to set the save file = ''
-
-  b) click 'File', 'Load geometry', and input geometry: volumes/data/users/olivia/COSI.DetectorHead.geo.setup
-  c) click 'File', 'load configuration', and in Root got to /volumes/selene/COSI_2016/ER/Sims/Revan_ER_TECHNIQUE.cfg #where TECHNIQUE = Bayes, Classic, MLP, or RF 
-  d) click 'File', 'Open', and input: output.evta.gz
-  e) click 'Reconstruction', 'Start Event Reconstruction'
-
+# *****Add code for naming roa and evta file uniquely; not "output.roa or output.evta"
 
 # 3. Input those to Rhea's ARM program
 
@@ -117,5 +115,3 @@ $ mnuclearizer -c Nuclearizer.cfg -n 19 -f RunTest*.sim
 # Automation possibilities:
    'look at for pyautogui help:' https://automatetheboringstuff.com/chapter18/ 
                                  https://github.com/asweigart/pyautogui 
-
-# *****Add code for naming roa and evta file uniquely; not "output.roa or output.evta"
