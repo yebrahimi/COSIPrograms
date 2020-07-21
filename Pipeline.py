@@ -59,10 +59,11 @@ b) Go to "options" in the top left corner and then click "geometry file" : geome
 c) In "Measurement loader for ROA files" go to options and put specfic isotope.roa.gz file as /volumes/selene/COSI_2016/ER/Data/Run###.Isotope.roa.gz
 -- saves output file as output.evta.gz
 "-- such that ### = 3 digit run number shown on DataSets.txt and Isotope = Na22, Ba133, 
+**Add code to read DataSets.txt to get Run### and Isotope name
 
 "Example:"
 nuclearizer -c /volumes/selene/COSI_2016/ER/Data/Nuclearizer_ER_Data.cfg -C
-ModuleOptions.XmlTagMeasurementLoaderROA.FileName=output.roa -C [the options
+ModuleOptions.XmlTagMeasurementLoaderROA.FileName=/volumes/selene/COSI_2016/ER/Data/Run###.Isotope.roa.gz -C [the options
 to set the save file] -g [/volumes/data/users/olivia/COSI.DetectorHead.geo.setup] -a
 
     --the options to set the save file =''
