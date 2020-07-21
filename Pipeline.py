@@ -68,7 +68,7 @@ to set the save file] -g [volumes/data/users/olivia/COSI.DetectorHead.geo.setup]
 
     --the options to set the save file =''
  
-# *****Add code for naming roa and evta file uniquely; not "output.roa or output.evta"
+# *****Add code for naming evta file uniquely; not "output.evta"
 
 # 2. Create the 4 tra files for the different event reconstructions with revan
 a) In root : revan -c /volumes/selene/COSI_2016/ER/Sims/Revan_ER_TECHNIQUE.cfg #where TECHNIQUE = Bayes, Classic, MLP, or RF 
@@ -96,7 +96,7 @@ for i in TECHNIQUE:
   to set the save file] -g [volumes/data/users/olivia/COSI.DetectorHead.geo.setup] -a
   
       --the options to set the save file = ''
-# *****Add code for naming roa and evta file uniquely; not "output.roa or output.evta"
+# *****Add code for naming tra files (4) uniquely; not "output.tra" -add technique in name
 
 # 3. Input those to Rhea's ARM program
 
