@@ -62,6 +62,13 @@ c) In "Measurement loader for ROA files" go to options and put specfic isotope.r
 **Add code to read DataSets.txt to get Run### and Isotope name
 
 "Example:"
+RunNumBa133 = [Run109, Run110, Run111]
+RunNumCo60 = [Run148]
+RunNumCs137 = [Run150, Run043, Run044, Run046, Run047]
+RunNumNa22 = [Run100, Run102, Rnu186, Run098, Run099]
+RunNumY88 = [Run104, Run105, Run106, Run107, Run152]
+RunNumIsotope= [Run109.Ba133, Run110.Ba133, Run111.Ba133, Run148.Co60, Run150.Cs137, Run043.Cs137,  Run044.Cs137, ...]
+for i in RunNumIsotope: 
 nuclearizer -c /volumes/selene/COSI_2016/ER/Data/Nuclearizer_ER_Data.cfg -C
 ModuleOptions.XmlTagMeasurementLoaderROA.FileName=volumes/selene/COSI_2016/ER/Data/Run###.Isotope.roa.gz -C [the options
 to set the save file] -g [volumes/data/users/olivia/COSI.DetectorHead.geo.setup] -a
