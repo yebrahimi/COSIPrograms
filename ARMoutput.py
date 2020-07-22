@@ -1,6 +1,7 @@
 import ROOT as M 
 from math import pi
 import argparse
+import ctypes
 
 #################################################################################################################################################################################
 
@@ -65,7 +66,7 @@ else:
 #Create Histogram list and color
 HistARMlist = [None, None, None, None]
 for i in range(0,4):
-    HistARMlist[i] = M.TH1D("ARM Plot of Compton events" + str(i), title, 200, -180, 180)
+    HistARMlist[i] = M.TH1D("ARM Plot of Compton events" + str(i), title, 201, -180, 180)
     
 HistARMlist[0].SetLineColor(M.kRed)
 HistARMlist[1].SetLineColor(M.kGreen)
@@ -119,28 +120,31 @@ CanvasARM.SetGridx()
 
 #Create Legend [Method, RMS Value, Peak Height, Total Count, FWHM]
 print("Creating legend...")
+#x, y, z = ctypes.c_int, ctypes.c_int, ctypes.c_int
+#HistARMlist[0].GetBinXYZ(HistARMlist[0].GetMaximumBin(), ctypes.byref(x), ctypes.byref(y), ctypes.byref(z))
+#print(x, y, z)
 legend = M.TLegend(0.60, 0.10, 1, 0)
-legend.SetHeader("Analysis Methods, RMS Values, Total Count", "C")
-legend.SetNColumns(3)
+legend.SetHeader("Analysis Methods, RMS Values, Peak Height, Total Count", "C")
+legend.SetNColumns(4)
 
 legend.AddEntry(HistARMlist[0], "Classic Method", "l")
 legend.AddEntry(HistARMlist[0], str(HistARMlist[0].GetRMS()), "l")
-#peak height
+legend.AddEntry(HistARMlist[0], str(HistARMlist[0].GetYaxis().GetXmax()), "l")
 legend.AddEntry(HistARMlist[0], str(HistARMlist[0].GetEntries()), "l") 
 
 legend.AddEntry(HistARMlist[1], "Bayes Method", "l")
 legend.AddEntry(HistARMlist[1], str(HistARMlist[1].GetRMS()), "l")
-#peak height
+legend.AddEntry(HistARMlist[1], "peak height", "l")
 legend.AddEntry(HistARMlist[1], str(HistARMlist[1].GetEntries()), "l")
 
 legend.AddEntry(HistARMlist[2], "MLP Method", "l")
 legend.AddEntry(HistARMlist[2], str(HistARMlist[2].GetRMS()), "l")
-#peak height
+legend.AddEntry(HistARMlist[2], "peak height", "l")
 legend.AddEntry(HistARMlist[2], str(HistARMlist[2].GetEntries()), "l")
 
 legend.AddEntry(HistARMlist[3], "RF Method", "l")
 legend.AddEntry(HistARMlist[3], str(HistARMlist[3].GetRMS()), "l")
-#peak height
+legend.AddEntry(HistARMlist[3], "peak height", "l")
 legend.AddEntry(HistARMlist[3], str(HistARMlist[3].GetEntries()), "l")
 
 legend.Draw()
