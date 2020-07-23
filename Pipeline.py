@@ -51,6 +51,34 @@ revan -c MyConfig.cfg -C
 ModuleOptions.XmlTagMeasurementLoaderROA.FileName=My.evta -C [the options
 to set the save file] -g [Your geometry] -a
 
+ Usage: Revan <options>
+
+      -f --filename <filename>:
+             Use this file as evta- or sim-file
+      -g --geometry <filename>:
+             Use this file as geometry-file
+      -c --configuration <filename>.cfg:
+             Use this file as parameter file.
+             All other given infromations such as -f and -g overwrite information in the configuration file.
+             If no configuration file is give ~/.revan.cfg is used
+      -C --change-configuration <pattern>:
+             Replace any value in the configuration file (-C can be used multiple times)
+             E.g. to change the coincidence window, one would set pattern to:
+             -C CoincidenceWindow=1e-06
+         --oi:
+             Save the OI information, in case tra files are generated
+      -a --analyze:
+             Analyze the evta-file given with the -f option, otherwise the file in the configuration file
+      -s --generate spectra:
+             Generate spectra using the options previously set in the GUI and stored in the configuration file
+      -d --debug:
+             Use debug mode
+      -n --no-gui:
+             Do not use a graphical user interface
+      -h --help:
+             You know the answer...
+
+
 #################################################################################################################################################################################
 
 # 1. Convert the roa files to evta files with nuclearizer
@@ -62,11 +90,11 @@ c) In "Measurement loader for ROA files" go to options and put specfic isotope.r
 **Add code to read DataSets.txt to get Run### and Isotope name
 
 "Example:"
-RunNumBa133 = [Run109, Run110, Run111]
-RunNumCo60 = [Run148]
-RunNumCs137 = [Run150, Run043, Run044, Run046, Run047]
-RunNumNa22 = [Run100, Run102, Rnu186, Run098, Run099]
-RunNumY88 = [Run104, Run105, Run106, Run107, Run152]
+RunNumBa133 = [Run109, Run110, Run111] #add .Ba133
+RunNumCo60 = [Run148] #add .Co60
+RunNumCs137 = [Run150, Run043, Run044, Run046, Run047] # add .Cs137
+RunNumNa22 = [Run100, Run102, Rnu186, Run098, Run099] #add .Na22
+RunNumY88 = [Run104, Run105, Run106, Run107, Run152] #add .Y88
 RunNumIsotope= [Run109.Ba133, Run110.Ba133, Run111.Ba133, Run148.Co60, Run150.Cs137, Run043.Cs137,  Run044.Cs137, ...]
 for i in RunNumIsotope: 
 nuclearizer -c /volumes/selene/COSI_2016/ER/Data/Nuclearizer_ER_Data.cfg -C
@@ -100,7 +128,7 @@ TECHNIQUE = [Bayes, Classic, MLP, RF]
 for i in TECHNIQUE:
   revan -c /volumes/selene/COSI_2016/ER/Sims/Revan_ER_i.cfg -C
   ModuleOptions.XmlTagMeasurementLoaderROA.FileName=output.evta -C [the options
-  to set the save file] -g [volumes/data/users/olivia/COSI.DetectorHead.geo.setup] -a
+  to set the save file] -g [volumes/data/users/olivia/COSI.DetectorHead.geo.setup] -f -s -n -a
   
       --the options to set the save file = ''
 # *****Add code for naming tra files (4) uniquely; not "output.tra" -add technique in name
