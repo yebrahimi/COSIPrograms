@@ -115,7 +115,7 @@ for y in range(0,4):
 #############################################################################################################################################################################
 
 #Draw Histogram, Set Up Canvas
-CanvasARM = M.TCanvas()
+CanvasARM = M.TCanvas("CanvasARM", title, 650, 800)
 print("Drawing ARM histograms for each method...")
 for m in range(0,4):
     if log == 'yes':
@@ -132,15 +132,16 @@ HistARMlist[0].GetYaxis().CenterTitle()
 
 CanvasARM.cd()
 CanvasARM.SetGridx()
-CanvasARM.SetBottomMargin(0.3)
+CanvasARM.SetBottomMargin(0.5)
 
 #Create Legend [Method, RMS Value, Peak Height, Total Count, FWHM]
 print("Creating legend...")
 #x, y, z = ctypes.c_int, ctypes.c_int, ctypes.c_int
 #HistARMlist[0].GetBinXYZ(HistARMlist[0].GetMaximumBin(), ctypes.byref(x), ctypes.byref(y), ctypes.byref(z))
 #print(x, y, z)
-legend = M.TLegend(0.30, 0.15, 0.7, 0)
+legend = M.TLegend(0.15, 0.3, 0.85, 0)
 legend.SetHeader("Analysis Methods, RMS Values, Peak Height, Total Count, FWHM", "C")
+legend.SetTextSize(0.017)
 legend.SetNColumns(5)
 
 legend.AddEntry(HistARMlist[0], "Classic Method", "l")
