@@ -63,9 +63,18 @@ def getMaxHist(Hist):
     return Max
 
 def getFWHM(Hist):
-    Hist.Fit("gaus", "0")
-    stdev = Hist.GetStdDev()
-    FWHM = 2*np.sqrt(2*math.log(2))*stdev
+    half_peak = getMaxHist(Hist)/2
+    low_halfpeak, high_halfpeak = 0,0
+    for c in range(1, Hist.GetNbinsX()+1):
+        if Hist.GetBinContent(c) > half_peak:
+            low_halfpeak = (Hist.GetXaxis().GetBinCenter(c) + Hist.GetXaxis().GetBinCenter(c+1))/2
+            break
+    for d in reversed(range(1, Hist.GetNbinsX()+1)):
+        if Hist.GetBinContent(d) > half_peak:
+            high_halfpeak = (Hist.GetXaxis().GetBinCenter(d) + Hist.GetXaxis().GetBinCenter(d+1))/2
+            break
+    print(low_halfpeak, high_halfpeak)
+    FWHM = high_halfpeak - low_halfpeak
     return FWHM
 
 ###################################################################################################################################################################################
@@ -81,7 +90,7 @@ else:
 #Create Histogram list and color
 HistARMlist = [None, None, None, None]
 for i in range(0,4):
-    HistARMlist[i] = M.TH1D("ARM Plot of Compton events" + str(i), title, 201, -180, 180)
+    HistARMlist[i] = M.TH1D("ARM Plot of Compton events" + str(i), title, 501, -180, 180)
     
 HistARMlist[0].SetLineColor(M.kRed)
 HistARMlist[1].SetLineColor(M.kGreen)
@@ -139,7 +148,7 @@ print("Creating legend...")
 #x, y, z = ctypes.c_int, ctypes.c_int, ctypes.c_int
 #HistARMlist[0].GetBinXYZ(HistARMlist[0].GetMaximumBin(), ctypes.byref(x), ctypes.byref(y), ctypes.byref(z))
 #print(x, y, z)
-legend = M.TLegend(0.15, 0.3, 0.85, 0)
+legend = M.TLegend(0.15, 0.35, 0.85, 0.1)
 legend.SetHeader("Analysis Methods, RMS Values, Peak Height, Total Count, FWHM", "C")
 legend.SetTextSize(0.017)
 legend.SetNColumns(5)
@@ -154,19 +163,19 @@ legend.AddEntry(HistARMlist[1], "Bayes Method", "l")
 legend.AddEntry(HistARMlist[1], str(HistARMlist[1].GetRMS()), "l")
 legend.AddEntry(HistARMlist[1], str(getMaxHist(HistARMlist[1])), "l")
 legend.AddEntry(HistARMlist[1], str(HistARMlist[1].GetEntries()), "l")
-legend.AddEntry(HistARMlist[0], str(getFWHM(HistARMlist[1])), "l")
+legend.AddEntry(HistARMlist[1], str(getFWHM(HistARMlist[1])), "l")
 
 legend.AddEntry(HistARMlist[2], "MLP Method", "l")
 legend.AddEntry(HistARMlist[2], str(HistARMlist[2].GetRMS()), "l")
 legend.AddEntry(HistARMlist[2], str(getMaxHist(HistARMlist[2])), "l")
 legend.AddEntry(HistARMlist[2], str(HistARMlist[2].GetEntries()), "l")
-legend.AddEntry(HistARMlist[0], str(getFWHM(HistARMlist[2])), "l")
+legend.AddEntry(HistARMlist[2], str(getFWHM(HistARMlist[2])), "l")
 
 legend.AddEntry(HistARMlist[3], "RF Method", "l")
 legend.AddEntry(HistARMlist[3], str(HistARMlist[3].GetRMS()), "l")
 legend.AddEntry(HistARMlist[3], str(getMaxHist(HistARMlist[3])), "l")
 legend.AddEntry(HistARMlist[3], str(HistARMlist[3].GetEntries()), "l")
-legend.AddEntry(HistARMlist[0], str(getFWHM(HistARMlist[3])), "l")
+legend.AddEntry(HistARMlist[3], str(getFWHM(HistARMlist[3])), "l")
 
 legend.Draw()
 
