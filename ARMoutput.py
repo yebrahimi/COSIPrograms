@@ -75,7 +75,7 @@ def getFWHM(Hist):
             break
     print(low_halfpeak, high_halfpeak)
     FWHM = high_halfpeak - low_halfpeak
-    return FWHM
+    return round(FWHM, 2)
 
 ###################################################################################################################################################################################
 
@@ -138,6 +138,7 @@ HistARMlist[0].SetTitle(title)
 HistARMlist[0].GetXaxis().SetTitle("ARM [deg]")
 HistARMlist[0].GetXaxis().CenterTitle()
 HistARMlist[0].GetYaxis().CenterTitle()
+HistARMlist[0].GetYaxis().SetTitleOffset(1.7)
 
 CanvasARM.cd()
 CanvasARM.SetGridx()
@@ -145,34 +146,38 @@ CanvasARM.SetBottomMargin(0.5)
 
 #Create Legend [Method, RMS Value, Peak Height, Total Count, FWHM]
 print("Creating legend...")
-#x, y, z = ctypes.c_int, ctypes.c_int, ctypes.c_int
-#HistARMlist[0].GetBinXYZ(HistARMlist[0].GetMaximumBin(), ctypes.byref(x), ctypes.byref(y), ctypes.byref(z))
-#print(x, y, z)
+Header = M.TH1D("Legend Header placeholder", " ", 1, -180, 180)
+Header.SetLineColor(M.kWhite)
 legend = M.TLegend(0.15, 0.35, 0.85, 0.1)
-legend.SetHeader("Analysis Methods, RMS Values, Peak Height, Total Count, FWHM", "C")
 legend.SetTextSize(0.017)
 legend.SetNColumns(5)
 
+legend.AddEntry(Header, "Analysis Methods", "l")
+legend.AddEntry(Header, "RMS Value", "l")
+legend.AddEntry(Header, "Peak Height", "l")
+legend.AddEntry(Header, "Total Count", "l")
+legend.AddEntry(Header, "FWHM", "l")
+
 legend.AddEntry(HistARMlist[0], "Classic Method", "l")
-legend.AddEntry(HistARMlist[0], str(HistARMlist[0].GetRMS()), "l")
+legend.AddEntry(HistARMlist[0], str(round(HistARMlist[0].GetRMS(), 2)), "l")
 legend.AddEntry(HistARMlist[0], str(getMaxHist(HistARMlist[0])), "l")
 legend.AddEntry(HistARMlist[0], str(HistARMlist[0].GetEntries()), "l") 
 legend.AddEntry(HistARMlist[0], str(getFWHM(HistARMlist[0])), "l")
 
 legend.AddEntry(HistARMlist[1], "Bayes Method", "l")
-legend.AddEntry(HistARMlist[1], str(HistARMlist[1].GetRMS()), "l")
+legend.AddEntry(HistARMlist[1], str(round(HistARMlist[1].GetRMS(), 2)), "l")
 legend.AddEntry(HistARMlist[1], str(getMaxHist(HistARMlist[1])), "l")
 legend.AddEntry(HistARMlist[1], str(HistARMlist[1].GetEntries()), "l")
 legend.AddEntry(HistARMlist[1], str(getFWHM(HistARMlist[1])), "l")
 
 legend.AddEntry(HistARMlist[2], "MLP Method", "l")
-legend.AddEntry(HistARMlist[2], str(HistARMlist[2].GetRMS()), "l")
+legend.AddEntry(HistARMlist[2], str(round(HistARMlist[2].GetRMS(), 2)), "l")
 legend.AddEntry(HistARMlist[2], str(getMaxHist(HistARMlist[2])), "l")
 legend.AddEntry(HistARMlist[2], str(HistARMlist[2].GetEntries()), "l")
 legend.AddEntry(HistARMlist[2], str(getFWHM(HistARMlist[2])), "l")
 
 legend.AddEntry(HistARMlist[3], "RF Method", "l")
-legend.AddEntry(HistARMlist[3], str(HistARMlist[3].GetRMS()), "l")
+legend.AddEntry(HistARMlist[3], str(round(HistARMlist[3].GetRMS(), 2)), "l")
 legend.AddEntry(HistARMlist[3], str(getMaxHist(HistARMlist[3])), "l")
 legend.AddEntry(HistARMlist[3], str(HistARMlist[3].GetEntries()), "l")
 legend.AddEntry(HistARMlist[3], str(getFWHM(HistARMlist[3])), "l")
