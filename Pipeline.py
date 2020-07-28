@@ -77,7 +77,16 @@ to set the save file] -g [Your geometry] -a
              Do not use a graphical user interface
       -h --help:
              You know the answer...
+        
+#To look at XML file:
+'click in Nuclearizer on "Save configuration" it saves the configuration as an XML file. If you look into the file, you will see that the tag sequence for a save
+'file name is:
 
+<ModuleOptions><XmlTagEventSaver><FileName>
+
+#To change the output file name to your desired output file name:
+nuclearizer -C
+ModuleOptions.XmlTagEventSaver.FileName=MyExampleOutputFileName.roa
 
 #################################################################################################################################################################################
 
