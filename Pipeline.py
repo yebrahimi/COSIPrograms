@@ -50,7 +50,9 @@ to set the save file] -g [Your geometry] -a
 revan -c MyConfig.cfg -C
 ModuleOptions.XmlTagMeasurementLoaderROA.FileName=My.evta -C [the options
 to set the save file] -g [Your geometry] -a
+# give the full path name for geometry
 
+to COSI.DetecterHead.geo.setup
  Usage: Revan <options>
 
       -f --filename <filename>:
@@ -106,9 +108,9 @@ RunNumNa22 = [Run100, Run102, Rnu186, Run098, Run099] #add .Na22
 RunNumY88 = [Run104, Run105, Run106, Run107, Run152] #add .Y88
 RunNumIsotope= [Run109.Ba133, Run110.Ba133, Run111.Ba133, Run148.Co60, Run150.Cs137, Run043.Cs137,  Run044.Cs137, ...]
 for i in RunNumIsotope: 
-nuclearizer -c /volumes/selene/COSI_2016/ER/Data/Nuclearizer_ER_Data.cfg -C
-ModuleOptions.XmlTagMeasurementLoaderROA.FileName=volumes/selene/COSI_2016/ER/Data/Run###.Isotope.roa.gz -C [the options
-to set the save file] -g [volumes/data/users/olivia/COSI.DetectorHead.geo.setup] -a
+nuclearizer -c /home/olivia/volumes/selene/COSI_2016/ER/Data/Nuclearizer_ER_Data.cfg -C
+ModuleOptions.XmlTagMeasurementLoaderROA.FileName=Run###.Isotope.roa.gz -C ModuleOptions.XmlTagEventSaver.FileName=MyExampleOutputFileName.roa
+ -g [/home/olivia/volumes/data/users/olivia/COSI.DetectorHead.geo.setup] -a
 
     --the options to set the save file =''
  
