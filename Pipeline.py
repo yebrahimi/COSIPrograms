@@ -96,25 +96,21 @@ ModuleOptions.XmlTagEventSaver.FileName=MyExampleOutputFileName.roa
 a) In root : nuclearizer -c /volumes/selene/COSI_2016/ER/Data/Nuclearizer_ER_Data.cfg
 b) Go to "options" in the top left corner and then click "geometry file" : geometry file = /volumes/data/users/olivia/COSI.DetectorHead.geo.setup
 c) In "Measurement loader for ROA files" go to options and put specfic isotope.roa.gz file as /volumes/selene/COSI_2016/ER/Data/Run###.Isotope.roa.gz
--- saves output file as output.evta.gz
-"-- such that ### = 3 digit run number shown on DataSets.txt and Isotope = Na22, Ba133, 
-**Add code to read DataSets.txt to get Run### and Isotope name
-
-"Example:"
+Ba133 = []
 RunNumBa133 = [Run109, Run110, Run111] #add .Ba133
 RunNumCo60 = [Run148] #add .Co60
 RunNumCs137 = [Run150, Run043, Run044, Run046, Run047] # add .Cs137
 RunNumNa22 = [Run100, Run102, Rnu186, Run098, Run099] #add .Na22
 RunNumY88 = [Run104, Run105, Run106, Run107, Run152] #add .Y88
-RunNumIsotope= [Run109.Ba133, Run110.Ba133, Run111.Ba133, Run148.Co60, Run150.Cs137, Run043.Cs137,  Run044.Cs137, ...]
-for i in RunNumIsotope: 
-nuclearizer -c /home/olivia/volumes/selene/COSI_2016/ER/Data/Nuclearizer_ER_Data.cfg -C
-ModuleOptions.XmlTagMeasurementLoaderROA.FileName=Run###.Isotope.roa.gz -C ModuleOptions.XmlTagEventSaver.FileName=MyExampleOutputFileName.roa
- -g [/home/olivia/volumes/data/users/olivia/COSI.DetectorHead.geo.setup] -a
+RunNumIsotope= [Run109.Ba133, Run110.Ba133, Run111.Ba133, Run148.Co60, Run150.Cs137, Run043.Cs137,  Run044.Cs137]
+-- saves output file as output.evta.gz
+"-- such that ### = 3 digit run number shown on DataSets.txt and Isotope = Na22, Ba133, 
+**Add code to read DataSets.txt to get Run### and Isotope name
 
-    --the options to set the save file =''
  
-# *****Add code for naming evta file uniquely; not "output.evta"
+nuclearizer -c /home/olivia/volumes/selene/COSI_2016/ER/Data/Nuclearizer_ER_Data.cfg -C
+ModuleOptions.XmlTagMeasurementLoaderROA.FileName=RunNum.Isotope.roa.gz -C ModuleOptions.XmlTagEventSaver.FileName=output.RunNum.Isotope.evta.gz
+ -g [/home/olivia/volumes/data/users/olivia/COSI.DetectorHead.geo.setup] -a
 
 # 2. Create the 4 tra files for the different event reconstructions with revan
 a) In root : revan -c /volumes/selene/COSI_2016/ER/Sims/Revan_ER_TECHNIQUE.cfg #where TECHNIQUE = Bayes, Classic, MLP, or RF 
@@ -133,13 +129,16 @@ for i in TECHNIQUE:
   d) click 'File', 'Open', and input: output.evta.gz
   e) click 'Reconstruction', 'Start Event Reconstruction'
   
-  
-"Example:"
+-c /volumes/selene/COSI_2016/ER/Sims/Revan_ER_Classic.cfg 
+  -c /volumes/selene/COSI_2016/ER/Sims/Revan_ER_MLP.cfg -c /volumes/selene/COSI_2016/ER/Sims/Revan_ER_RF.cfg
+ -f [output.RunNum.Isotope.evta]
+ 
+# Code:
 TECHNIQUE = [Bayes, Classic, MLP, RF]
 for i in TECHNIQUE:
-  revan -c /volumes/selene/COSI_2016/ER/Sims/Revan_ER_i.cfg -C
-  ModuleOptions.XmlTagMeasurementLoaderROA.FileName=output.evta -C [the options
-  to set the save file] -g [volumes/data/users/olivia/COSI.DetectorHead.geo.setup] -f -s -n -a
+  revan -c /home/olivia/volumes/selene/COSI_2016/ER/Sims/Revan_ER_Bayes.cfg 
+  - f [/home/olivia/output.RunNum.Isotope.evta.gz] -C =/home/olivia/output.RunNum.Isotope.TECHNIQUE.tra.gz
+  -g [/home/olivia/volumes/data/users/olivia/COSI.DetectorHead.geo.setup]  -oi -s -a -n
   
       --the options to set the save file = ''
 # *****Add code for naming tra files (4) uniquely; not "output.tra" -add technique in name
