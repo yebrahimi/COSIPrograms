@@ -25,18 +25,17 @@ nuclearizer -C
 ModuleOptions.XmlTagEventSaver.FileName=MyExampleOutputFileName.roa
 #################################################################################################################################################################################
 #!/bin/bash
-
-Geometry="/home/andreas/Science/Software/Nuclearizer/MassModel/COSI.DetectorHead.geo.setup"
+Geometry = "/home/olivia/volumes/data/users/olivia/COSI.DetectorHead.geo.setup"
 
 # Step zero: Create list of runs:
 Runs=""
 #for File in `ls ../Data/*.roa.gz`; do
-for File in `ls ../Data/Cs*.roa.gz`; do
+for File in `ls ../Data/Cs*.roa.gz`; do 
+#Need to incorporate /Na22*, /Ba133*, /Co60, /Y88*
   Runs+=" $(basename ${File} .roa.gz)"
 done
 
 echo "Runs: ${Runs}"
-
 
 # Step one: Convert everything to evta files
 for Run in ${Runs}; do
@@ -55,10 +54,26 @@ Algorithms="Classic"
 for A in ${Algorithms}; do
   for Run in ${Runs}; do
     mwait -p=revan -i=cores
+    
+    revan -a -n -c Revan_ER_${A}.cfg -g ${Geometry} -f ${Run}.evta.gz &
+  done
+  wait
+  for Run in ${Runs}; do
+    mv ${Run}.tra.gz ${Run}.${A}.tra.gz
+  done
+done
+
+Algorithms="Bayes MLP RF"
+for A in ${Algorithms}; do
+  for Run in ${Runs}; do
+    mwait -p=revan -i=cores
     # To do: for Bayes MLP & ER you have to replace the training data sets, i.e.
     # <BayesianComptonFile>/volumes/crius/users/andreas/COSI_2016/ER/Sims/Cs137/AllSky/ComptonTMVADataSets.p1.inc1.mc.goodbad.rsp</BayesianComptonFile>
     # <CSRTMVAFile>/volumes/crius/users/andreas/COSI_2016/ER/Sims/Cs137/AllSky/ComptonTMVA.v2.tmva</CSRTMVAFile>
     # <CSRTMVAMethods>MLP</CSRTMVAMethods>
+<BayesianComptonFile>/home/andreas/Home/Science/Projects/NCT/NCT_2009/Bayesian/Response.rsp.mc.goodbad.rsp</BayesianComptonFile>
+<CSRTMVAFile />
+<CSRTMVAMethods>BDTD</CSRTMVAMethods>
 
     revan -a -n -c Revan_ER_${A}.cfg -g ${Geometry} -f ${Run}.evta.gz &
   done
@@ -72,10 +87,10 @@ for Run in ${Runs}; do
   # Run Rhea's program
 done
 
-
+###############################################################################################################################################################################
 # 1. Convert the roa files to evta files with nuclearizer
 nuclearizer -c /home/olivia/volumes/selene/COSI_2016/ER/Data/Nuclearizer_ER_Data.cfg -C
-ModuleOptions.XmlTagMeasurementLoaderROA.FileName=RunNum.Isotope.roa.gz -C ModuleOptions.XmlTagEventSaver.FileName=output.RunNum.Isotope.roa.gz #.roa or .evta?
+ModuleOptions.XmlTagMeasurementLoaderROA.FileName=RunNum.Isotope.roa.gz -C ModuleOptions.XmlTagEventSaver.FileName=output.RunNum.Isotope.evta.gz
  -g [/home/olivia/volumes/data/users/olivia/COSI.DetectorHead.geo.setup] -a
 
 # 2. Create the 4 tra files for the different event reconstructions with revan
@@ -88,7 +103,7 @@ for i in TECHNIQUE:
   -g [/home/olivia/volumes/data/users/olivia/COSI.DetectorHead.geo.setup]  -oi -s -a -n
   
       --the options to set the save file = ''
-# *****Add code for naming tra files (4) uniquely; not "output.tra" -add technique in name
+# *****Add code for naming tra files (4) uniquely; not "output.tra" -add technique in name; must be done after each tra file is created
 # 3. Input those to Rhea's ARM program
 # Do it all in parallel.
 '-- look at MEGAlib: 
