@@ -1,5 +1,6 @@
 import ROOT as M 
 import math
+import statistics
 from math import pi
 from math import log
 import argparse
@@ -55,6 +56,7 @@ for x in range(0,4):
     trafiles[x] = str(f.readline()).strip()
     print(trafiles[x])
 
+#metric functions
 def getMaxHist(Hist):
     Max = 0
     for b in range(1, Hist.GetNbinsX()+1):
@@ -76,6 +78,21 @@ def getFWHM(Hist):
     print(low_halfpeak, high_halfpeak)
     FWHM = high_halfpeak - low_halfpeak
     return round(FWHM, 2)
+
+def bootstrapFWHM(Hist, R=10000):
+    FWHMs = []
+    Sample = []
+    for i in range(R):
+        ARMSample = M.TH1D("Sample", "", 501, -180, 180)
+        for w in range(1, int(Hist.GetEntries())): 
+            event = Hist.GetRandom()
+            ARMSample.Fill(event)
+        fwhm = getFWHM(ARMSample)
+        FWHMs.append(fwhm)
+    stderror = statistics.stdev(FWHMs)
+    return stderror
+
+#then, copy code and do same bootstrap for RMS value
 
 ###################################################################################################################################################################################
 
@@ -107,7 +124,7 @@ for y in range(0,4):
         print("File " + FileName + " loaded!")
 
 #Fill Histogram values
-    counter = 0 
+    counter = 0
     while counter <= 1000000:
         Event = Reader.GetNextEvent()
         counter = counter + 1
@@ -162,7 +179,7 @@ legend.AddEntry(HistARMlist[0], "Classic Method", "l")
 legend.AddEntry(HistARMlist[0], str(round(HistARMlist[0].GetRMS(), 2)), "l")
 legend.AddEntry(HistARMlist[0], str(getMaxHist(HistARMlist[0])), "l")
 legend.AddEntry(HistARMlist[0], str(HistARMlist[0].GetEntries()), "l") 
-legend.AddEntry(HistARMlist[0], str(getFWHM(HistARMlist[0])), "l")
+legend.AddEntry(HistARMlist[0], str(getFWHM(HistARMlist[0])) + "+-"+ str(bootstrapFWHM(HistARMlist[0], R=10000)), "l")
 
 legend.AddEntry(HistARMlist[1], "Bayes Method", "l")
 legend.AddEntry(HistARMlist[1], str(round(HistARMlist[1].GetRMS(), 2)), "l")
