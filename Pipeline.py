@@ -71,6 +71,8 @@ for A in ${Algorithms}; do
     # <BayesianComptonFile>/volumes/crius/users/andreas/COSI_2016/ER/Sims/Cs137/AllSky/ComptonTMVADataSets.p1.inc1.mc.goodbad.rsp</BayesianComptonFile>
     # <CSRTMVAFile>/volumes/crius/users/andreas/COSI_2016/ER/Sims/Cs137/AllSky/ComptonTMVA.v2.tmva</CSRTMVAFile>
     # <CSRTMVAMethods>MLP</CSRTMVAMethods>
+  
+ #What I see in the revan configuration xml file:
 <BayesianComptonFile>/home/andreas/Home/Science/Projects/NCT/NCT_2009/Bayesian/Response.rsp.mc.goodbad.rsp</BayesianComptonFile>
 <CSRTMVAFile />
 <CSRTMVAMethods>BDTD</CSRTMVAMethods>
