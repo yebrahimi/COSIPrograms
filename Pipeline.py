@@ -12,26 +12,14 @@ M.gSystem.Load("$(MEGALIB)/lib/libMEGAlib.so")
 G = M.MGlobal()
 G.Initialize()
 
-Geometry = "/home/olivia/volumes/data/users/olivia/COSI.DetectorHead.geo.setup"
-
-################################################################################################################################################################################
-#To look at XML file:
-'click in Nuclearizer on "Save configuration" it saves the configuration as an XML file. If you look into the file, you will see that the tag sequence for a save
-'file name is:
-<ModuleOptions><XmlTagEventSaver><FileName>
-
-#To change the output file name to your desired output file name:
-nuclearizer -C
-ModuleOptions.XmlTagEventSaver.FileName=MyExampleOutputFileName.roa
 #################################################################################################################################################################################
 #!/bin/bash
 Geometry = "/home/olivia/volumes/data/users/olivia/COSI.DetectorHead.geo.setup"
 
 # Step zero: Create list of runs:
 Runs=""
-#for File in `ls ../Data/*.roa.gz`; do
+#for File in `ls ../Data/*.roa.gz`; do #includes all runs
 for File in `ls ../Data/Cs*.roa.gz`; do 
-#Need to incorporate /Na22*, /Ba133*, /Co60, /Y88*
   Runs+=" $(basename ${File} .roa.gz)"
 done
 
@@ -47,23 +35,9 @@ for Run in ${Runs}; do
 done
 wait
 
-
 # Step two: Run revan
 #Algorithms="Classic Bayes MLP RF"
 Algorithms="Classic"
-for A in ${Algorithms}; do
-  for Run in ${Runs}; do
-    mwait -p=revan -i=cores
-    
-    revan -a -n -c Revan_ER_${A}.cfg -g ${Geometry} -f ${Run}.evta.gz &
-  done
-  wait
-  for Run in ${Runs}; do
-    mv ${Run}.tra.gz ${Run}.${A}.tra.gz
-  done
-done
-
-Algorithms="Bayes MLP RF"
 for A in ${Algorithms}; do
   for Run in ${Runs}; do
     mwait -p=revan -i=cores
@@ -71,12 +45,16 @@ for A in ${Algorithms}; do
     # <BayesianComptonFile>/volumes/crius/users/andreas/COSI_2016/ER/Sims/Cs137/AllSky/ComptonTMVADataSets.p1.inc1.mc.goodbad.rsp</BayesianComptonFile>
     # <CSRTMVAFile>/volumes/crius/users/andreas/COSI_2016/ER/Sims/Cs137/AllSky/ComptonTMVA.v2.tmva</CSRTMVAFile>
     # <CSRTMVAMethods>MLP</CSRTMVAMethods>
-  
+    if A in ${Algorithms} == Bayes, MLP, or RF; do
+     revan -a -n -c Revan_ER_${A}.cfg -g ${Geometry} -f ${Run}.evta.gz -C BayesianComptonFile=volumes/crius/users/andreas/COSI_2016/ER/Sims/Cs137/AllSky/ComptonTMVADataSets.p1.inc1.mc.goodbad.rsp
+     -C CSRTMVAFile=/volumes/crius/users/andreas/COSI_2016/ER/Sims/Cs137/AllSky/ComptonTMVA.v2.tmva  -C CSRTMVAMethods=MLP 
+      
  #What I see in the revan configuration xml file:
-<BayesianComptonFile>/home/andreas/Home/Science/Projects/NCT/NCT_2009/Bayesian/Response.rsp.mc.goodbad.rsp</BayesianComptonFile>
-<CSRTMVAFile />
+#<BayesianComptonFile>/home/andreas/Home/Science/Projects/NCT/NCT_2009/Bayesian/Response.rsp.mc.goodbad.rsp</BayesianComptonFile>
+#<CSRTMVAFile />
 <CSRTMVAMethods>BDTD</CSRTMVAMethods>
 
+   else: # if A in ${Algorithms} == Classic
     revan -a -n -c Revan_ER_${A}.cfg -g ${Geometry} -f ${Run}.evta.gz &
   done
   wait
