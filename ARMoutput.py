@@ -79,7 +79,7 @@ def getFWHM(Hist):
     FWHM = high_halfpeak - low_halfpeak
     return round(FWHM, 2)
 
-def bootstrapFWHM(Hist, R=10000):
+def bootstrapFWHM(Hist, R=100):
     FWHMs = []
     Sample = []
     for i in range(R):
@@ -90,7 +90,7 @@ def bootstrapFWHM(Hist, R=10000):
         fwhm = getFWHM(ARMSample)
         FWHMs.append(fwhm)
     stderror = statistics.stdev(FWHMs)
-    return stderror
+    return round(stderror, 2)
 
 #then, copy code and do same bootstrap for RMS value
 
@@ -179,25 +179,25 @@ legend.AddEntry(HistARMlist[0], "Classic Method", "l")
 legend.AddEntry(HistARMlist[0], str(round(HistARMlist[0].GetRMS(), 2)), "l")
 legend.AddEntry(HistARMlist[0], str(getMaxHist(HistARMlist[0])), "l")
 legend.AddEntry(HistARMlist[0], str(HistARMlist[0].GetEntries()), "l") 
-legend.AddEntry(HistARMlist[0], str(getFWHM(HistARMlist[0])) + "+-"+ str(bootstrapFWHM(HistARMlist[0], R=10000)), "l")
+legend.AddEntry(HistARMlist[0], str(getFWHM(HistARMlist[0])) + "+-"+ str(bootstrapFWHM(HistARMlist[0], R=1000)), "l")
 
 legend.AddEntry(HistARMlist[1], "Bayes Method", "l")
 legend.AddEntry(HistARMlist[1], str(round(HistARMlist[1].GetRMS(), 2)), "l")
 legend.AddEntry(HistARMlist[1], str(getMaxHist(HistARMlist[1])), "l")
 legend.AddEntry(HistARMlist[1], str(HistARMlist[1].GetEntries()), "l")
-legend.AddEntry(HistARMlist[1], str(getFWHM(HistARMlist[1])), "l")
+legend.AddEntry(HistARMlist[0], str(getFWHM(HistARMlist[1])) + "+-"+ str(bootstrapFWHM(HistARMlist[1], R=1000)), "l")
 
 legend.AddEntry(HistARMlist[2], "MLP Method", "l")
 legend.AddEntry(HistARMlist[2], str(round(HistARMlist[2].GetRMS(), 2)), "l")
 legend.AddEntry(HistARMlist[2], str(getMaxHist(HistARMlist[2])), "l")
 legend.AddEntry(HistARMlist[2], str(HistARMlist[2].GetEntries()), "l")
-legend.AddEntry(HistARMlist[2], str(getFWHM(HistARMlist[2])), "l")
+legend.AddEntry(HistARMlist[0], str(getFWHM(HistARMlist[2])) + "+-"+ str(bootstrapFWHM(HistARMlist[2], R=1000)), "l")
 
 legend.AddEntry(HistARMlist[3], "RF Method", "l")
 legend.AddEntry(HistARMlist[3], str(round(HistARMlist[3].GetRMS(), 2)), "l")
 legend.AddEntry(HistARMlist[3], str(getMaxHist(HistARMlist[3])), "l")
 legend.AddEntry(HistARMlist[3], str(HistARMlist[3].GetEntries()), "l")
-legend.AddEntry(HistARMlist[3], str(getFWHM(HistARMlist[3])), "l")
+legend.AddEntry(HistARMlist[0], str(getFWHM(HistARMlist[3])) + "+-"+ str(bootstrapFWHM(HistARMlist[3], R=1000)), "l")
 
 legend.Draw()
 
