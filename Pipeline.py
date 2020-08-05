@@ -36,8 +36,8 @@ done
 wait
 
 # Step two: Run revan
-#Algorithms="Classic Bayes MLP RF"
-Algorithms="Classic"
+Algorithms="Classic Bayes MLP RF"
+#Algorithms="Classic"
 for A in ${Algorithms}; do
   for Run in ${Runs}; do
     mwait -p=revan -i=cores
@@ -52,9 +52,9 @@ for A in ${Algorithms}; do
  #What I see in the revan configuration xml file:
 #<BayesianComptonFile>/home/andreas/Home/Science/Projects/NCT/NCT_2009/Bayesian/Response.rsp.mc.goodbad.rsp</BayesianComptonFile>
 #<CSRTMVAFile />
-<CSRTMVAMethods>BDTD</CSRTMVAMethods>
+#<CSRTMVAMethods>BDTD</CSRTMVAMethods>
 
-   else: # if A in ${Algorithms} == Classic
+   else:  if A in ${Algorithms} == Classic
     revan -a -n -c Revan_ER_${A}.cfg -g ${Geometry} -f ${Run}.evta.gz &
   done
   wait
