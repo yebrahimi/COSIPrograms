@@ -1,16 +1,16 @@
 # Loop over all the data available
 
-import ROOT as M
-from pathlib import Path 
-from math import pi
-import argparse
+#import ROOT as M
+#from pathlib import Path 
+#from math import pi
+#import argparse
 
 # Load MEGAlib into ROOT
-M.gSystem.Load("$(MEGALIB)/lib/libMEGAlib.so")
+#M.gSystem.Load("$(MEGALIB)/lib/libMEGAlib.so")
 
 # Initialize MEGAlib
-G = M.MGlobal()
-G.Initialize()
+#G = M.MGlobal()
+#G.Initialize()
 
 #################################################################################################################################################################################
 #!/bin/bash
@@ -69,24 +69,24 @@ done
 
 ###############################################################################################################################################################################
 # 1. Convert the roa files to evta files with nuclearizer
-nuclearizer -c /home/olivia/volumes/selene/COSI_2016/ER/Data/Nuclearizer_ER_Data.cfg -C
-ModuleOptions.XmlTagMeasurementLoaderROA.FileName=RunNum.Isotope.roa.gz -C ModuleOptions.XmlTagEventSaver.FileName=output.RunNum.Isotope.evta.gz
- -g [/home/olivia/volumes/data/users/olivia/COSI.DetectorHead.geo.setup] -a
+#nuclearizer -c /home/olivia/volumes/selene/COSI_2016/ER/Data/Nuclearizer_ER_Data.cfg -C
+#ModuleOptions.XmlTagMeasurementLoaderROA.FileName=RunNum.Isotope.roa.gz -C ModuleOptions.XmlTagEventSaver.FileName=output.RunNum.Isotope.evta.gz
+# -g [/home/olivia/volumes/data/users/olivia/COSI.DetectorHead.geo.setup] -a
 
 # 2. Create the 4 tra files for the different event reconstructions with revan
 #How to Run in parallel in Revan step
--- use for loop
-TECHNIQUE = [Bayes, Classic, MLP, RF]
-for i in TECHNIQUE:
-  revan -c /home/olivia/volumes/selene/COSI_2016/ER/Sims/Revan_ER_Bayes.cfg 
-  - f [/home/olivia/output.RunNum.Isotope.evta.gz] -C =/home/olivia/output.RunNum.Isotope.TECHNIQUE.tra.gz
-  -g [/home/olivia/volumes/data/users/olivia/COSI.DetectorHead.geo.setup]  -oi -s -a -n
+#-- use for loop
+#TECHNIQUE = [Bayes, Classic, MLP, RF]
+#for i in TECHNIQUE:
+#  revan -c /home/olivia/volumes/selene/COSI_2016/ER/Sims/Revan_ER_Bayes.cfg 
+#  - f [/home/olivia/output.RunNum.Isotope.evta.gz] -C =/home/olivia/output.RunNum.Isotope.TECHNIQUE.tra.gz
+#  -g [/home/olivia/volumes/data/users/olivia/COSI.DetectorHead.geo.setup]  -oi -s -a -n
   
-      --the options to set the save file = ''
+#      --the options to set the save file = ''
 # *****Add code for naming tra files (4) uniquely; not "output.tra" -add technique in name; must be done after each tra file is created
 # 3. Input those to Rhea's ARM program
 # Do it all in parallel.
-'-- look at MEGAlib: 
-mnuclearizer is also an option if you want to run parallel threads. An example of an mnuclearizer command is:
-$ mnuclearizer -c Nuclearizer.cfg -n 19 -f RunTest*.sim
-'Always set the nice level to 19 if you’d like to continue working on that computer and not have it heavily slowed down.
+#'-- look at MEGAlib: 
+#mnuclearizer is also an option if you want to run parallel threads. An example of an mnuclearizer command is:
+#$ mnuclearizer -c Nuclearizer.cfg -n 19 -f RunTest*.sim
+#'Always set the nice level to 19 if you’d like to continue working on that computer and not have it heavily slowed down.
