@@ -28,8 +28,8 @@ def getFWHM(Hist):
     return round(FWHM, 2)
 
 #Bootstrap Functions
-def bootstrapFWHM(Hist, R=1000):
-    FWHMs = []
+def bootstrapFWHM(Hist, FWHMs, R=1000):
+    #FWHMs = []
     Sample = []
     for i in range(R):
         ARMSample = M.TH1D("Sample", "", 501, -180, 180)
