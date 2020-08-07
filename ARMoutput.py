@@ -1,11 +1,13 @@
-import ROOT as M 
-import math
-import statistics
+###############################################################################################################################################################################
+#Written by Rhea Senthil Kumar
+###############################################################################################################################################################################
+
+import ROOT as M
 from math import pi
-from math import log
 import argparse
-import ctypes
-import numpy as np
+import Helper as h
+import multiprocessing as mp
+pool = mp.Pool(mp.cpu_count())
 
 #################################################################################################################################################################################
 
@@ -50,51 +52,14 @@ if int(args.minevents) < 1000000:
 if args.title != "":
     title = args.title
 
-trafiles = [None, None, None, None]
+###################################################################################################################################################################################
+
+#Read in Files
+trafiles = [None]*4
 f = open(args.filename, "r")
 for x in range(0,4):
     trafiles[x] = str(f.readline()).strip()
     print(trafiles[x])
-
-#metric functions
-def getMaxHist(Hist):
-    Max = 0
-    for b in range(1, Hist.GetNbinsX()+1):
-        if Hist.GetBinContent(b) > Max:
-            Max = Hist.GetBinContent(b)
-    return Max
-
-def getFWHM(Hist):
-    half_peak = getMaxHist(Hist)/2
-    low_halfpeak, high_halfpeak = 0,0
-    for c in range(1, Hist.GetNbinsX()+1):
-        if Hist.GetBinContent(c) > half_peak:
-            low_halfpeak = (Hist.GetXaxis().GetBinCenter(c) + Hist.GetXaxis().GetBinCenter(c+1))/2
-            break
-    for d in reversed(range(1, Hist.GetNbinsX()+1)):
-        if Hist.GetBinContent(d) > half_peak:
-            high_halfpeak = (Hist.GetXaxis().GetBinCenter(d) + Hist.GetXaxis().GetBinCenter(d+1))/2
-            break
-    print(low_halfpeak, high_halfpeak)
-    FWHM = high_halfpeak - low_halfpeak
-    return round(FWHM, 2)
-
-def bootstrapFWHM(Hist, R=100):
-    FWHMs = []
-    Sample = []
-    for i in range(R):
-        ARMSample = M.TH1D("Sample", "", 501, -180, 180)
-        for w in range(1, int(Hist.GetEntries())): 
-            event = Hist.GetRandom()
-            ARMSample.Fill(event)
-        fwhm = getFWHM(ARMSample)
-        FWHMs.append(fwhm)
-    stderror = statistics.stdev(FWHMs)
-    return round(stderror, 2)
-
-#then, copy code and do same bootstrap for RMS value
-
-###################################################################################################################################################################################
 
 # Load geometry:
 Geometry = M.MDGeometryQuest()
@@ -105,7 +70,7 @@ else:
   quit()
     
 #Create Histogram list and color
-HistARMlist = [None, None, None, None]
+HistARMlist = [None]*4
 for i in range(0,4):
     HistARMlist[i] = M.TH1D("ARM Plot of Compton events" + str(i), title, 501, -180, 180)
     
@@ -137,6 +102,18 @@ for y in range(0,4):
             HistARMlist[y].Fill(Event.GetARMGamma(M.MVector(X, Y, Z), M.MCoordinateSystem.c_Cartesian3D)*(180/pi));
         elif Event.GetType() == M.MPhysicalEvent.c_Photo:
             pass
+
+#Parallelizing
+FWHMs = [None]*4
+RMSs = [None]*4
+Peaks = [None]*4
+#if __name__ == '__main__':
+for i in range(0,4):
+    FWHMs[i] = pool.apply(h.bootstrapFWHM, args=(HistARMlist[i], 1000,))
+    RMSs[i] = pool.apply(h.bootstrapRMS, args=(HistARMlist[i], 1000,))
+    Peaks[i] = pool.apply(h.bootstrapPeak, args=(HistARMlist[i], 1000,))
+pool.close()
+pool.join()
 
 #############################################################################################################################################################################
 
@@ -176,28 +153,28 @@ legend.AddEntry(Header, "Total Count", "l")
 legend.AddEntry(Header, "FWHM", "l")
 
 legend.AddEntry(HistARMlist[0], "Classic Method", "l")
-legend.AddEntry(HistARMlist[0], str(round(HistARMlist[0].GetRMS(), 2)), "l")
-legend.AddEntry(HistARMlist[0], str(getMaxHist(HistARMlist[0])), "l")
+legend.AddEntry(HistARMlist[0], str(round(HistARMlist[0].GetRMS(), 2)) + "+-" + str(RMSs[0]), "l")
+legend.AddEntry(HistARMlist[0], str(h.getMaxHist(HistARMlist[0])) + "+-" + str(Peaks[0]), "l")
 legend.AddEntry(HistARMlist[0], str(HistARMlist[0].GetEntries()), "l") 
-legend.AddEntry(HistARMlist[0], str(getFWHM(HistARMlist[0])) + "+-"+ str(bootstrapFWHM(HistARMlist[0], R=1000)), "l")
+legend.AddEntry(HistARMlist[0], str(h.getFWHM(HistARMlist[0])) + "+-"+ str(FWHMs[0]), "l")
 
 legend.AddEntry(HistARMlist[1], "Bayes Method", "l")
-legend.AddEntry(HistARMlist[1], str(round(HistARMlist[1].GetRMS(), 2)), "l")
-legend.AddEntry(HistARMlist[1], str(getMaxHist(HistARMlist[1])), "l")
+legend.AddEntry(HistARMlist[1], str(round(HistARMlist[1].GetRMS(), 2)) + "+-" + str(RMSs[1]), "l")
+legend.AddEntry(HistARMlist[1], str(h.getMaxHist(HistARMlist[1])) + "+-" + str(Peaks[1]), "l")
 legend.AddEntry(HistARMlist[1], str(HistARMlist[1].GetEntries()), "l")
-legend.AddEntry(HistARMlist[0], str(getFWHM(HistARMlist[1])) + "+-"+ str(bootstrapFWHM(HistARMlist[1], R=1000)), "l")
+legend.AddEntry(HistARMlist[1], str(h.getFWHM(HistARMlist[1])) + "+-"+ str(FWHMs[1]), "l")
 
 legend.AddEntry(HistARMlist[2], "MLP Method", "l")
-legend.AddEntry(HistARMlist[2], str(round(HistARMlist[2].GetRMS(), 2)), "l")
-legend.AddEntry(HistARMlist[2], str(getMaxHist(HistARMlist[2])), "l")
+legend.AddEntry(HistARMlist[2], str(round(HistARMlist[2].GetRMS(), 2)) + "+-" + str(RMSs[2]), "l")
+legend.AddEntry(HistARMlist[2], str(h.getMaxHist(HistARMlist[2])) + "+-" + str(Peaks[2]), "l")
 legend.AddEntry(HistARMlist[2], str(HistARMlist[2].GetEntries()), "l")
-legend.AddEntry(HistARMlist[0], str(getFWHM(HistARMlist[2])) + "+-"+ str(bootstrapFWHM(HistARMlist[2], R=1000)), "l")
+legend.AddEntry(HistARMlist[2], str(h.getFWHM(HistARMlist[2])) + "+-"+ str(FWHMs[2]), "l")
 
 legend.AddEntry(HistARMlist[3], "RF Method", "l")
-legend.AddEntry(HistARMlist[3], str(round(HistARMlist[3].GetRMS(), 2)), "l")
-legend.AddEntry(HistARMlist[3], str(getMaxHist(HistARMlist[3])), "l")
+legend.AddEntry(HistARMlist[3], str(round(HistARMlist[3].GetRMS(), 2)) + "+-" + str(RMSs[3]), "l")
+legend.AddEntry(HistARMlist[3], str(h.getMaxHist(HistARMlist[3])) + "+-" + str(Peaks[3]), "l")
 legend.AddEntry(HistARMlist[3], str(HistARMlist[3].GetEntries()), "l")
-legend.AddEntry(HistARMlist[0], str(getFWHM(HistARMlist[3])) + "+-"+ str(bootstrapFWHM(HistARMlist[3], R=1000)), "l")
+legend.AddEntry(HistARMlist[3], str(h.getFWHM(HistARMlist[3])) + "+-"+ str(FWHMs[3]), "l")
 
 legend.Draw()
 
