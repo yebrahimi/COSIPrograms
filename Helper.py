@@ -28,8 +28,8 @@ def getFWHM(Hist):
     return round(FWHM, 2)
 
 #Bootstrap Functions
-def bootstrapFWHM(Hist, FWHMs, R=1000):
-    #FWHMs = []
+def bootstrapFWHM(Hist, R=1000):
+    FWHMs = []
     Sample = []
     for i in range(R):
         ARMSample = M.TH1D("Sample", "", 501, -180, 180)
@@ -39,7 +39,6 @@ def bootstrapFWHM(Hist, FWHMs, R=1000):
         fwhm = getFWHM(ARMSample)
         FWHMs.append(fwhm)
     stderror = statistics.stdev(FWHMs)
-    print(round(stderror, 2))
     return round(stderror, 2)
 
 
@@ -54,7 +53,6 @@ def bootstrapRMS(Hist, R=1000):
         rms = ARMSample.GetRMS()
         RMSs.append(rms)
     stderror = statistics.stdev(RMSs)
-    print(round(stderror, 2))
     return round(stderror, 2)
 
 def bootstrapPeak(Hist, R=1000):
@@ -68,6 +66,5 @@ def bootstrapPeak(Hist, R=1000):
         peak = getMaxHist(ARMSample)
         Peaks.append(peak)
     stderror = statistics.stdev(Peaks)
-    print(round(stderror, 2))
     return round(stderror, 2)
 
