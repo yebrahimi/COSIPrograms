@@ -1,25 +1,13 @@
-# Loop over all the data available
-
-#import ROOT as M
-#from pathlib import Path 
-#from math import pi
-#import argparse
-
-# Load MEGAlib into ROOT
-#M.gSystem.Load("$(MEGALIB)/lib/libMEGAlib.so")
-
-# Initialize MEGAlib
-#G = M.MGlobal()
-#G.Initialize()
-
+###############################################################################################################################################################################
+#Written by Olivia Salaben
 #################################################################################################################################################################################
 #!/bin/bash
 Geometry = "/home/olivia/volumes/data/users/olivia/COSI.DetectorHead.geo.setup"
 
 # Step zero: Create list of runs:
 Runs=""
-#for File in `ls ../Data/*.roa.gz`; do #includes all runs
-for File in ls ../Data/Cs*.roa.gz; do 
+for File in 'ls ../Data/*.roa.gz'; do #includes all runs
+#for File in 'ls ../Data/Cs*.roa.gz'; do 
   Runs+=" $(basename ${File} .roa.gz)"
 done
 
