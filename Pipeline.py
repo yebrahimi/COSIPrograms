@@ -14,10 +14,10 @@ for File in 'ls ../Data/*.roa.gz': #includes all runs
   Runs+=" $(basename ${File} .roa.gz)"
 done
 
-echo "Runs: ${Runs}"
+echo 'Runs: ${Runs}'
 
 # Step one: Convert everything to evta files
-for Run in ${Runs}; do
+for Run in ${Runs}:
   mwait -p=nuclearizer -i=cores
 
   InputFile="../Data/${Run}.roa.gz"
@@ -29,8 +29,8 @@ wait
 # Step two: Run revan
 Algorithms="Classic Bayes MLP RF"
 #Algorithms="Classic"
-for A in ${Algorithms}; do
-  for Run in ${Runs}; do
+for A in ${Algorithms}: 
+  for Run in ${Runs}: 
     mwait -p=revan -i=cores
     # To do: for Bayes MLP & ER you have to replace the training data sets, i.e.
     # <BayesianComptonFile>/volumes/crius/users/andreas/COSI_2016/ER/Sims/Cs137/AllSky/ComptonTMVADataSets.p1.inc1.mc.goodbad.rsp</BayesianComptonFile>
@@ -54,7 +54,7 @@ for A in ${Algorithms}; do
   done
 done
 
-for Run in ${Runs}; do
+for Run in ${Runs}:
   python3 ARMoutput.py # Run Rhea's program
 done
 
