@@ -14,7 +14,7 @@ for File in 'ls ../Data/*.roa.gz': #includes all runs
   Runs+=" $(basename ${File} .roa.gz)"
 done
 
-echo [Runs: ${Runs}]
+#echo [Runs: ${Runs}]
 
 # Step one: Convert everything to evta files
 for Run in ${Runs}:
