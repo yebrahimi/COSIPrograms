@@ -59,18 +59,9 @@ done
 
 for Run in ${Run}; do
    for A in ${Algorithms}; do
-   echo “${Run}.${A}.tra.gz}” >> ${Run}.txt
+#   echo “${Run}.${A}.tra.gz}” >> ${Run}.txt
+   echo "${Run}.${A}.tra.gz" >> ${Run}.${ISOTOPE}.txt
 done
-   python ARMoutput.py -f ${Run}.txt
-done
-  i=1
-  while read line; do
-  #Reading each line
-  echo "Line No, $i: $line"
-  i=$((i+1))
-  done < $file
-  #do ARM program
-  python3 /volumes/selene/users/rhea/COSIPrograms/ARMoutput.py
+   python3 /volumes/selene/users/rhea/COSIPrograms/ARMoutput.py -f ${Run}.${ISOTOPE}.txt
 done
 
-#
