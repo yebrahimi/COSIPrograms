@@ -42,10 +42,13 @@ for A in ${Algorithms}; do
     if [[${A} == Classic ]] || [[${A} == Bayes ]]; then
       revan -a -n -c Revan_ER_${A}.cfg -g ${Geometry} -f ${Run}.evta.gz &
     elif [[${A} == MLP ]] || {{${A} == RF}}; then
-      revan -a -n -c Revan_ER_${A}.cfg -g ${Geometry} -f ${Run}.evta.gz -C CSRTMVAFile==</volumes/crius/users/andreas/COSI_2016/ER/Sims/${ISOTOPE}/AllSky/ComptonTMVA.v2.tmva -C CSRTMVAMethods=${A} &
+      revan -a -n -c Revan_ER_${A}.cfg -g ${Geometry} -f ${Run}.evta.gz #-C CSRTMVAFile==/volumes/crius/users/andreas/COSI_2016/ER/Sims/${ISOTOPE}/AllSky/ComptonTMVA.v2.tmva -C CSRTMVAMethods=${A} &
     else # replace =</volumes/crius/users/andreas/COSI_2016/ER?Sims/${ISOTOPE}/AllSky/ComptonTMVA.v2.tmva with 
       FileName=$(grep CSRTMVAFile Revan_ER_RF.cfg | awk -F'>' '{ print $2}' | awk -F'<' '{print $1}'); echo ${FileName/Cs137/Ba133}
+      ${FileName/Cs137/Ba133}
+      ${FileName/Cs137/${ISOTOPE}}
       echo "Error when running Revan. Check geometry, file names, or configuration."
+
     fi
   done
   wait
@@ -54,9 +57,12 @@ for A in ${Algorithms}; do
   done
 done
 
-for Run in ${Runs}; do
-  # Run Rhea's program
-  file="${Run}.${A}.tra.gz"
+for Run in ${Run}; do
+	for A in ${Algorithms}; do
+		echo “${Run}.${A}.tra.gz}” >> ${Run}.txt
+	done
+	python ARMoutput.py -f ${Run}.txt
+done
   i = 1
   while read line; do
   #Reading each line
