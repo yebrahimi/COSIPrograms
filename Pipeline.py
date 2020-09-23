@@ -1,23 +1,21 @@
-###############################################################################################################################################################################
-#Written by Olivia Salaben and Andreas Zoglauer
-#################################################################################################################################################################################
-"To run: cd COSIPrograms"
-" python3 Pipeline.py"
-
 #!/bin/bash
-Geometry = "/home/olivia/volumes/data/users/olivia/COSI.DetectorHead.geo.setup"
+
+Geometry="/home/andreas/Science/Software/Nuclearizer/MassModel/COSI.DetectorHead.geo.setup"
 
 # Step zero: Create list of runs:
 Runs=""
-for File in 'ls ../Data/*.roa.gz': #includes all runs
-#for File in 'ls ../Data/Cs*.roa.gz': do 
+for File in `ls /volumes/selene/COSI_2016/ER/Data/*.roa.gz`; do
+#for File in `ls ../Data/Cs*.roa.gz`; do
+  echo "RunElement#" | awk -F. '{print $2}'
+  echo "${File}"
   Runs+=" $(basename ${File} .roa.gz)"
 done
 
-#echo [Runs: ${Runs}]
+echo "Runs: ${Runs}"
+
 
 # Step one: Convert everything to evta files
-for Run in ${Runs}:
+for Run in ${Runs}; do
   mwait -p=nuclearizer -i=cores
 
   InputFile="../Data/${Run}.roa.gz"
@@ -26,27 +24,29 @@ for Run in ${Runs}:
 done
 wait
 
+
 # Step two: Run revan
-Algorithms="Classic Bayes MLP RF"
-#Algorithms="Classic"
-for A in ${Algorithms}: 
-  for Run in ${Runs}: 
+#Algorithms="Classic Bayes MLP RF"
+Algorithms="Classic"
+for A in ${Algorithms}; do
+  for Run in ${Runs}; do
     mwait -p=revan -i=cores
     # To do: for Bayes MLP & ER you have to replace the training data sets, i.e.
     # <BayesianComptonFile>/volumes/crius/users/andreas/COSI_2016/ER/Sims/Cs137/AllSky/ComptonTMVADataSets.p1.inc1.mc.goodbad.rsp</BayesianComptonFile>
     # <CSRTMVAFile>/volumes/crius/users/andreas/COSI_2016/ER/Sims/Cs137/AllSky/ComptonTMVA.v2.tmva</CSRTMVAFile>
     # <CSRTMVAMethods>MLP</CSRTMVAMethods>
-    if A in ${Algorithms} == Bayes, MLP, or RF; do
-     revan -a -n -c Revan_ER_${A}.cfg -g ${Geometry} -f ${Run}.evta.gz -C BayesianComptonFile=volumes/crius/users/andreas/COSI_2016/ER/Sims/Cs137/AllSky/ComptonTMVADataSets.p1.inc1.mc.goodbad.rsp
-     -C CSRTMVAFile=/volumes/crius/users/andreas/COSI_2016/ER/Sims/Cs137/AllSky/ComptonTMVA.v2.tmva  -C CSRTMVAMethods=MLP 
-      
- #What I see in the revan configuration xml file:
-#<BayesianComptonFile>/home/andreas/Home/Science/Projects/NCT/NCT_2009/Bayesian/Response.rsp.mc.goodbad.rsp</BayesianComptonFile>
-#<CSRTMVAFile />
-#<CSRTMVAMethods>BDTD</CSRTMVAMethods>
+    grep "TMVA" /volumes/selene/COSI_2016/ER/Pipeline/Revan_ER_MLP.cfg #Revan_ER_Bayes.cfg
 
-   else:  if A in ${Algorithms} == Classic
-    revan -a -n -c Revan_ER_${A}.cfg -g ${Geometry} -f ${Run}.evta.gz &
+    cd /volumes/selene/users/rhea/revan/NewRun
+    ISOTOPE=$(echo ${Run} | awk -F. '{print $2}')
+    if [[${A} == Classic ]] || [[${A} == Bayes ]]; then
+      revan -a -n -c Revan_ER_${A}.cfg -g ${Geometry} -f ${Run}.evta.gz &
+    elif [[${A} == MLP ]] || {{${A} == RF}}; then
+      revan -a -n -c Revan_ER_${A}.cfg -g ${Geometry} -f ${Run}.evta.gz -C CSRTMVAFile==</volumes/crius/users/andreas/COSI_2016/ER/Sims/${ISOTOPE}/AllSky/ComptonTMVA.v2.tmva -C CSRTMVAMethods=${A} &
+    else # replace =</volumes/crius/users/andreas/COSI_2016/ER?Sims/${ISOTOPE}/AllSky/ComptonTMVA.v2.tmva with 
+      FileName=$(grep CSRTMVAFile Revan_ER_RF.cfg | awk -F'>' '{ print $2}' | awk -F'<' '{print $1}'); echo ${FileName/Cs137/Ba133}
+      echo "Error when running Revan. Check geometry, file names, or configuration."
+    fi
   done
   wait
   for Run in ${Runs}; do
@@ -54,7 +54,17 @@ for A in ${Algorithms}:
   done
 done
 
-for Run in ${Runs}:
-  python3 ARMoutput.py # Run Rhea's program
+for Run in ${Runs}; do
+  # Run Rhea's program
+  file="${Run}.${A}.tra.gz"
+  i = 1
+  while read line; do
+  #Reading each line
+  echo "Line No, $i: $line"
+  i = $((i+1))
+  done < $file
+  #do ARM program
+  python3 /volumes/selene/users/rhea/COSIPrograms/ARMoutput.py
 done
 
+#
