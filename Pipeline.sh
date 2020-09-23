@@ -58,10 +58,10 @@ for A in ${Algorithms}; do
 done
 
 for Run in ${Run}; do
-	for A in ${Algorithms}; do
-		echo “${Run}.${A}.tra.gz}” >> ${Run}.txt
-	done
-	python ARMoutput.py -f ${Run}.txt
+   for A in ${Algorithms}; do
+   echo “${Run}.${A}.tra.gz}” >> ${Run}.txt
+done
+   python ARMoutput.py -f ${Run}.txt
 done
   i=1
   while read line; do
