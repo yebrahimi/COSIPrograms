@@ -63,11 +63,11 @@ for Run in ${Run}; do
 	done
 	python ARMoutput.py -f ${Run}.txt
 done
-  i = 1
+  i=1
   while read line; do
   #Reading each line
   echo "Line No, $i: $line"
-  i = $((i+1))
+  i=$((i+1))
   done < $file
   #do ARM program
   python3 /volumes/selene/users/rhea/COSIPrograms/ARMoutput.py
