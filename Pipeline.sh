@@ -1,10 +1,12 @@
 #!/bin/bash
+import os
 
 Geometry="/home/andreas/Science/Software/Nuclearizer/MassModel/COSI.DetectorHead.geo.setup"
 
 # Step zero: Create list of runs:
 Runs=""
-for File in "/volumes/selene/COSI_2016/ER/Data/*.roa.gz"; do
+PATHS="/volumes/selene/COSI_2016/ER/Data/*.roa.gz"
+for File in os.walk(PATHS); do
 #for File in `ls ../Data/Cs*.roa.gz`; do
   echo "RunElement#" | awk -F. '{print $2}'
   echo "${File}"
