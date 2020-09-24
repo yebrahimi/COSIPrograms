@@ -1,5 +1,9 @@
 #!/bin/bash
 
+#chmod u+r+x filename.sh
+#./filename.sh
+#chmod +x the_file_name
+
 Geometry="/home/andreas/Science/Software/Nuclearizer/MassModel/COSI.DetectorHead.geo.setup"
 
 # Step zero: Create list of runs:
