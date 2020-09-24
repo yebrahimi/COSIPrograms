@@ -13,7 +13,7 @@ for File in ${PATHS}; do
 #for File in `ls ../Data/Cs*.roa.gz`; do
   #cp ${File} /volumes/selene/users/yasaman/CopyData/File
   cd /volumes/selene/users/yasaman/CopyData
-  if [ ! -f $(basename $FILE) ]; then
+  if [ ! -f $(basename $File) ]; then
     cp ${File} /volumes/selene/users/yasaman/CopyData
   fi
   chmod +x ${File}
@@ -52,7 +52,7 @@ for A in ${Algorithms}; do
     ISOTOPE=$(echo ${Run} | awk -F. '{print $2}')
     if [[${A} == Classic ]] || [[${A} == Bayes ]]; then
       revan -a -n -c Revan_ER_${A}.cfg -g ${Geometry} -f ${Run}.evta.gz &
-    elif [[${A} == MLP ]] || {{${A} == RF}}; then
+    elif [[${A} == MLP ]] || [[${A} == RF]]; then
       revan -a -n -c Revan_ER_${A}.cfg -g ${Geometry} -f ${Run}.evta.gz #-C CSRTMVAFile==/volumes/crius/users/andreas/COSI_2016/ER/Sims/${ISOTOPE}/AllSky/ComptonTMVA.v2.tmva -C CSRTMVAMethods=${A} &
     else # replace =</volumes/crius/users/andreas/COSI_2016/ER?Sims/${ISOTOPE}/AllSky/ComptonTMVA.v2.tmva with 
       FileName=$(grep CSRTMVAFile Revan_ER_RF.cfg | awk -F'>' '{ print $2}' | awk -F'<' '{print $1}'); echo ${FileName/Cs137/Ba133}
@@ -73,6 +73,6 @@ for Run in ${Run}; do
 #   echo “${Run}.${A}.tra.gz}” >> ${Run}.txt
    echo "${Run}.${A}.tra.gz" >> ${Run}.txt
 done
-   python3 /volumes/selene/users/rhea/COSIPrograms/ARMoutput.py -f ${Run}.${ISOTOPE}.txt
+   python3 /volumes/selene/users/rhea/COSIPrograms/ARMoutput.py -f ${Run}.txt
 done
 
