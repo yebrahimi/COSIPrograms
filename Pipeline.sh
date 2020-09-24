@@ -1,5 +1,4 @@
 #!/bin/bash
-import os
 
 Geometry="/home/andreas/Science/Software/Nuclearizer/MassModel/COSI.DetectorHead.geo.setup"
 
