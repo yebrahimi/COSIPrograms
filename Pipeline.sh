@@ -11,9 +11,9 @@ Runs=""
 PATHS=$(ls /volumes/selene/COSI_2016/ER/Data/*.roa.gz)
 for File in ${PATHS}; do
 #for File in `ls ../Data/Cs*.roa.gz`; do
-  cp File /volumes/selene/users/rhea/test_dir/File
+  cp ${File} /volumes/selene/users/rhea/test_dir/File
   cd /volumes/selene/users/rhea/test_dir
-  chmod +x File
+  chmod +x ${File}
   echo "RunElement#" | awk -F. '{print $2}'
   echo "${File}"
   Runs+=" $(basename ${File} .roa.gz)"
