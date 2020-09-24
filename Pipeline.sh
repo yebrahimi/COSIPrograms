@@ -48,7 +48,7 @@ for A in ${Algorithms}; do
     # <CSRTMVAMethods>MLP</CSRTMVAMethods>
     grep "TMVA" /volumes/selene/COSI_2016/ER/Pipeline/Revan_ER_MLP.cfg #Revan_ER_Bayes.cfg
 
-    cd /volumes/selene/users/rhea/revan/NewRun
+    cd /volumes/selene/users/yasaman/CopyData
     ISOTOPE=$(echo ${Run} | awk -F. '{print $2}')
     if [[ ${A} == Classic ]] || [[ ${A} == Bayes ]]; then
       revan -a -n -c Revan_ER_${A}.cfg -g ${Geometry} -f ${Run}.evta.gz &
@@ -73,6 +73,6 @@ for Run in ${Run}; do
 #   echo “${Run}.${A}.tra.gz}” >> ${Run}.txt
    echo "${Run}.${A}.tra.gz" >> ${Run}.txt
 done
-   python3 /volumes/selene/users/rhea/COSIPrograms/ARMoutput.py -f ${Run}.txt
+   python3 /volumes/selene/users/yasaman/COSIPrograms/ARMoutput.py -f ${Run}.txt
 done
 
