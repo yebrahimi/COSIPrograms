@@ -68,7 +68,7 @@ done
 for Run in ${Run}; do
    for A in ${Algorithms}; do
 #   echo “${Run}.${A}.tra.gz}” >> ${Run}.txt
-   echo "${Run}.${A}.tra.gz" >> ${Run}.${ISOTOPE}.txt
+   echo "${Run}.${A}.tra.gz" >> ${Run}.txt
 done
    python3 /volumes/selene/users/rhea/COSIPrograms/ARMoutput.py -f ${Run}.${ISOTOPE}.txt
 done
