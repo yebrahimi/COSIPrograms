@@ -5,7 +5,7 @@ Geometry="/home/andreas/Science/Software/Nuclearizer/MassModel/COSI.DetectorHead
 
 # Step zero: Create list of runs:
 Runs=""
-PATHS="/volumes/selene/COSI_2016/ER/Data/*.roa.gz"
+PATHS="ls /volumes/selene/COSI_2016/ER/Data/*.roa.gz"
 for File in os.walk(PATHS); do
 #for File in `ls ../Data/Cs*.roa.gz`; do
   echo "RunElement#" | awk -F. '{print $2}'
