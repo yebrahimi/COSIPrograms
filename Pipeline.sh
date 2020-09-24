@@ -5,7 +5,16 @@
 #chmod +x the_file_name
 
 Geometry="/home/andreas/Science/Software/Nuclearizer/MassModel/COSI.DetectorHead.geo.setup"
-
+type nuclearizer >/dev/null 2>&1
+if [ $? -ne 0 ]; then
+  echo "ERROR: nuclearizer must be installed"
+  exit 1
+fi
+type revan >/dev/null 2>&1
+if [ $? -ne 0 ]; then
+  echo "ERROR: revan must be installed"
+  exit 1
+fi
 # Step zero: Create list of runs:
 Runs=""
 PATHS=$(ls /volumes/selene/COSI_2016/ER/Data/*.roa.gz)
