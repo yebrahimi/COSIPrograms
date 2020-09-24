@@ -8,7 +8,7 @@ Geometry="/home/andreas/Science/Software/Nuclearizer/MassModel/COSI.DetectorHead
 
 # Step zero: Create list of runs:
 Runs=""
-PATHS=ls /volumes/selene/COSI_2016/ER/Data/*.roa.gz
+PATHS=$(ls /volumes/selene/COSI_2016/ER/Data/*.roa.gz)
 for File in ${PATHS}; do
 #for File in `ls ../Data/Cs*.roa.gz`; do
   cp File /volumes/selene/users/rhea/test_dir/File
