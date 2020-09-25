@@ -38,7 +38,7 @@ cp /volumes/selene/COSI_2016/ER/Pipeline/*.cfg /volumes/selene/users/yasaman/Cop
 for Run in ${Runs}; do
   mwait -p=nuclearizer -i=cores
 
-  InputFile="../Data/${Run}.roa.gz"
+  InputFile="${Run}.roa.gz"
   OutputFile="${Run}.evta.gz"
   nuclearizer -a -g ${Geometry} -c Nuclearizer_ER_Data.cfg -C ModuleOptions.XmlTagMeasurementLoaderROA.FileName=${InputFile} -C ModuleOptions.XmlTagEventSaver.FileName=${OutputFile} &
 done
