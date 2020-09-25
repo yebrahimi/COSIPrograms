@@ -44,6 +44,14 @@ for Run in ${Runs}; do
 done
 wait
 
+for Run in ${Runs}; do
+  OutputFile="${Run}.evta.gz"
+  if [ ! -f ${OutputFile} ]; then 
+    echo “ERROR: Output file has not been created: ${OutputFile}”; 
+    exit 1; 
+   fi
+
+done
 
 # Step two: Run revan
 #Algorithms="Classic Bayes MLP RF"
