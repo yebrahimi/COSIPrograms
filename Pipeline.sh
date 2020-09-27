@@ -17,18 +17,18 @@ if [ $? -ne 0 ]; then
 fi
 # Step zero: Create list of runs:
 Runs=""
-PATHS=$(ls /volumes/selene/COSI_2016/ER/Data/*.roa.gz)
-for File in ${PATHS}; do
-#for File in `ls ../Data/Cs*.roa.gz`; do
-  #cp ${File} /volumes/selene/users/yasaman/CopyData/File
-  cd /volumes/selene/users/yasaman/CopyData
-  if [ ! -f $(basename $File) ]; then
-    cp ${File} /volumes/selene/users/yasaman/CopyData
-  fi
-  chmod +x ${File}
-  echo "RunElement#" | awk -F. '{print $2}'
-  echo "${File}"
-  Runs+=" $(basename ${File} .roa.gz)"
+while [ $# -gt 0 ] ; do
+  PATHS=$#
+  for File in ${PATHS}; do
+    cd /volumes/selene/users/yasaman/CopyData
+    if [ ! -f $(basename $File) ]; then
+      cp ${File} /volumes/selene/users/yasaman/CopyData
+    fi
+    chmod +x ${File}
+    echo "RunElement#" | awk -F. '{print $2}'
+    echo "${File}"
+    Runs+=" $(basename ${File} .roa.gz)"
+  done
 done
 
 echo "Runs: ${Runs}"
