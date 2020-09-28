@@ -4,9 +4,11 @@
 #./filename.sh
 #chmod +x the_file_name
 
+PATHS=$($1)
+COPY=$($2)
 Geometry="/home/andreas/Science/Software/Nuclearizer/MassModel/COSI.DetectorHead.geo.setup"
 type nuclearizer >/dev/null 2>&1
-PATHS=$($1)
+
 if [ $? -ne 0 ]; then
   echo "ERROR: nuclearizer must be installed"
   exit 1
@@ -20,9 +22,10 @@ fi
 Runs=""
 if [ $# -gt 0 ] ; then
   for File in ${PATHS}; do
-    cd /volumes/selene/users/yasaman/CopyData
+    #cd /volumes/selene/users/yasaman/CopyData
+    cd COPY
     if [ ! -f $(basename $File) ]; then
-      cp ${File} /volumes/selene/users/yasaman/CopyData
+      cp ${File} COPY
     fi
     chmod +x ${File}
     echo "RunElement#" | awk -F. '{print $2}'
