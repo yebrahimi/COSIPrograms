@@ -25,7 +25,7 @@ for File in ${PATHS}; do
   #cd /volumes/selene/users/yasaman/CopyData
   cd ${COPY}
   if [ ! -f $(basename $File) ]; then
-    cp ${File} ${COPY}
+    cp ${File} COPY
   fi
   chmod +x ${File}
   echo "RunElement#" | awk -F. '{print $2}'
