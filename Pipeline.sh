@@ -17,7 +17,7 @@ if [ $? -ne 0 ]; then
 fi
 # Step zero: Create list of runs:
 Runs=""
-while [ $# -gt 0 ] ; do
+if [ $# -gt 0 ] ; then
   echo "PATHS: $1";
   for File in ${PATHS}; do
     cd /volumes/selene/users/yasaman/CopyData
@@ -29,7 +29,7 @@ while [ $# -gt 0 ] ; do
     echo "${File}"
     Runs+=" $(basename ${File} .roa.gz)"
   done
-done
+fi
 
 echo "Runs: ${Runs}"
 
