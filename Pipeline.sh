@@ -6,6 +6,7 @@
 
 Geometry="/home/andreas/Science/Software/Nuclearizer/MassModel/COSI.DetectorHead.geo.setup"
 type nuclearizer >/dev/null 2>&1
+echo "PATHS: $1";
 if [ $? -ne 0 ]; then
   echo "ERROR: nuclearizer must be installed"
   exit 1
@@ -18,7 +19,6 @@ fi
 # Step zero: Create list of runs:
 Runs=""
 if [ $# -gt 0 ] ; then
-  echo "PATHS: $1";
   for File in ${PATHS}; do
     cd /volumes/selene/users/yasaman/CopyData
     if [ ! -f $(basename $File) ]; then
