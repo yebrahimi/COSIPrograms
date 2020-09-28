@@ -4,8 +4,8 @@
 #./filename.sh
 #chmod +x the_file_name
 
-PATHS=$($1)
-COPY=$($2)
+#PATHS=$($1)
+#COPY=$($2)
 Geometry="/home/andreas/Science/Software/Nuclearizer/MassModel/COSI.DetectorHead.geo.setup"
 type nuclearizer >/dev/null 2>&1
 
@@ -20,19 +20,18 @@ if [ $? -ne 0 ]; then
 fi
 # Step zero: Create list of runs:
 Runs=""
-if [ $# -gt 0 ] ; then
-  for File in ${PATHS}; do
-    #cd /volumes/selene/users/yasaman/CopyData
-    cd COPY
-    if [ ! -f $(basename $File) ]; then
-      cp ${File} COPY
-    fi
-    chmod +x ${File}
-    echo "RunElement#" | awk -F. '{print $2}'
-    echo "${File}"
-    Runs+=" $(basename ${File} .roa.gz)"
-  done
-fi
+PATHS=$(ls /volumes/selene/COSI_2016/ER/Data/*.roa.gz)
+for File in ${PATHS}; do
+  cd /volumes/selene/users/yasaman/CopyData
+  #cd COPY
+  if [ ! -f $(basename $File) ]; then
+    cp ${File} /volumes/selene/users/yasaman/CopyData
+  fi
+  chmod +x ${File}
+  echo "RunElement#" | awk -F. '{print $2}'
+  echo "${File}"
+  Runs+=" $(basename ${File} .roa.gz)"
+done
 
 echo "Runs: ${Runs}"
 
