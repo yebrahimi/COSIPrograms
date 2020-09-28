@@ -6,7 +6,7 @@
 
 Geometry="/home/andreas/Science/Software/Nuclearizer/MassModel/COSI.DetectorHead.geo.setup"
 type nuclearizer >/dev/null 2>&1
-echo "PATHS: $1";
+PATHS=$(#1)
 if [ $? -ne 0 ]; then
   echo "ERROR: nuclearizer must be installed"
   exit 1
