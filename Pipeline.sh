@@ -18,7 +18,8 @@ fi
 # Step zero: Create list of runs:
 Runs=""
 while [ $# -gt 0 ] ; do
-  PATHS=$#
+  echo "PATHS: $1";
+  ./Pipeline.sh <path to data files>
   for File in ${PATHS}; do
     cd /volumes/selene/users/yasaman/CopyData
     if [ ! -f $(basename $File) ]; then
