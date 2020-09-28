@@ -35,7 +35,7 @@ done
 
 echo "Runs: ${Runs}"
 
-cp /volumes/selene/COSI_2016/ER/Pipeline/*.cfg /volumes/selene/users/yasaman/CopyData
+cp /volumes/selene/COSI_2016/ER/Pipeline/*.cfg ${COPY}
 # Step one: Convert everything to evta files
 for Run in ${Runs}; do
   mwait -p=nuclearizer -i=cores
