@@ -23,9 +23,9 @@ Runs=""
 #PATHS=$(ls /volumes/selene/COSI_2016/ER/Data/*.roa.gz)
 for File in ${PATHS}; do
   #cd /volumes/selene/users/yasaman/CopyData
-  cd "$COPY"
+  cd ${COPY}
   if [ ! -f $(basename $File) ]; then
-    cp ${File} "$COPY"
+    cp ${File} ${COPY}
   fi
   chmod +x ${File}
   echo "RunElement#" | awk -F. '{print $2}'
@@ -35,7 +35,7 @@ done
 
 echo "Runs: ${Runs}"
 
-cp /volumes/selene/COSI_2016/ER/Pipeline/*.cfg "$COPY"
+cp /volumes/selene/COSI_2016/ER/Pipeline/*.cfg ${COPY}
 # Step one: Convert everything to evta files
 for Run in ${Runs}; do
   mwait -p=nuclearizer -i=cores
