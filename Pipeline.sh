@@ -4,7 +4,7 @@
 #./filename.sh
 #chmod +x the_file_name
 
-#PATHS=$($1)
+PATHS=$($1)
 #COPY=$($2)
 Geometry="/home/andreas/Science/Software/Nuclearizer/MassModel/COSI.DetectorHead.geo.setup"
 type nuclearizer >/dev/null 2>&1
@@ -20,7 +20,7 @@ if [ $? -ne 0 ]; then
 fi
 # Step zero: Create list of runs:
 Runs=""
-PATHS=$(ls /volumes/selene/COSI_2016/ER/Data/*.roa.gz)
+#PATHS=$(ls /volumes/selene/COSI_2016/ER/Data/*.roa.gz)
 for File in ${PATHS}; do
   cd /volumes/selene/users/yasaman/CopyData
   #cd COPY
