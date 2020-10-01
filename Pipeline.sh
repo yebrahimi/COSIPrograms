@@ -20,6 +20,45 @@ Usage() {
 }	
 
 
+
+#Options for ARM Output which can be set via command line
+minevents=100000
+xcoord=26.1
+ycoord=0.3
+zcoord=64
+set_log="no"
+energy=662
+title="Arm Plots for Compton Events"
+
+echo "Selected ARM Output Options:"
+while getopts "m:x:y:z:m:l:e:t" opt
+do
+case $opt in
+m)
+        minevents = $OPTARG;
+        echo "* Running ARM Output with minimum events: $minevents"
+x)
+        xcoord = $OPTARG;
+        echo "Setting x coordinate of source to: $xcoord"
+y)
+        ycoord = $OPTARG;
+        echo "Setting y coordinate of source to: $ycoord"
+z)
+        zcoord = $OPTARG;
+        echo "Setting z coordinate of source to: $zcoord"
+l)
+        set_log = $OPTARG;
+        echo "Use logarithmic scale on y axis of plot? $set_los"
+e)      
+        energy = $OPTARG;
+        echo "Using energy peak value of: $energy"
+t)
+        title = $OPTARG;
+        echo "Setting ARM Plot Title to: $title"
+esac
+done
+
+
 PATHS=$($1)
 COPY=$($2)
 Geometry="/home/andreas/Science/Software/Nuclearizer/MassModel/COSI.DetectorHead.geo.setup"
