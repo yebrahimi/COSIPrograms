@@ -36,25 +36,25 @@ do
 case $opt in
 m)
         minevents = $OPTARG;
-        echo "* Running ARM Output with minimum events: $minevents"
+        echo "* Running ARM Output with minimum events: $minevents";;
 x)
         xcoord = $OPTARG;
-        echo "Setting x coordinate of source to: $xcoord"
+        echo "Setting x coordinate of source to: $xcoord";;
 y)
         ycoord = $OPTARG;
-        echo "Setting y coordinate of source to: $ycoord"
+        echo "Setting y coordinate of source to: $ycoord";;
 z)
         zcoord = $OPTARG;
-        echo "Setting z coordinate of source to: $zcoord"
+        echo "Setting z coordinate of source to: $zcoord";;
 l)
         set_log = $OPTARG;
-        echo "Use logarithmic scale on y axis of plot? $set_los"
+        echo "Use logarithmic scale on y axis of plot? $set_los";;
 e)      
         energy = $OPTARG;
-        echo "Using energy peak value of: $energy"
+        echo "Using energy peak value of: $energy";;
 t)
         title = $OPTARG;
-        echo "Setting ARM Plot Title to: $title"
+        echo "Setting ARM Plot Title to: $title";;
 esac
 done
 
