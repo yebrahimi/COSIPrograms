@@ -22,7 +22,9 @@ Usage() {
 }	
 
 
-
+PATHS=""
+COPY=""
+Geometry="/home/andreas/Science/Software/Nuclearizer/MassModel/COSI.DetectorHead.geo.setup"
 #Options for ARM Output which can be set via command line
 minevents=100000
 xcoord=26.1
@@ -67,9 +69,7 @@ esac
 done
 
 
-PATHS=""
-COPY=""
-Geometry="/home/andreas/Science/Software/Nuclearizer/MassModel/COSI.DetectorHead.geo.setup"
+
 #check all the inputs to see if they are reasonable. 
 #PATH and COPY must be valid inputs
 
