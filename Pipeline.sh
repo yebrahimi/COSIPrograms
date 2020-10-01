@@ -147,6 +147,6 @@ for Run in ${Run}; do
 #   echo “${Run}.${A}.tra.gz}” >> ${Run}.txt
    echo "${Run}.${A}.tra.gz" >> ${Run}.txt
 done
-   python3 /volumes/selene/users/yasaman/COSIPrograms/ARMoutput.py -f ${Run}.txt
+   python3 /volumes/selene/users/yasaman/COSIPrograms/ARMoutput.py -f ${Run}.txt -m $minevents -x $xcoord -y $ycoord -z $zcoord -l $set_log -e $energy -t $title
 done
 
