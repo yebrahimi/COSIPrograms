@@ -35,7 +35,7 @@ energy=662
 title="Arm Plots for Compton Events"
 
 echo "Selected ARM Output Options:"
-while getopts "m:x:y:z:m:l:e:t:d:p:" opt
+while getopts "m:x:y:z:m:l:e:t:d:o:" opt
 do
 case $opt in
 m)
