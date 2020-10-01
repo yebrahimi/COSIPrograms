@@ -17,6 +17,8 @@ Usage() {
         echo "-l <str>          Displays ARM plot on logarithmic scale"
         echo "-e <float>        Peak energy value for source" 	
 	echo "-t <str>          Title for ARM Plot" 
+	echo "-d <str>		Destination of Copy"
+	echo "-p <str>		Path of data"
 }	
 
 
@@ -31,7 +33,7 @@ energy=662
 title="Arm Plots for Compton Events"
 
 echo "Selected ARM Output Options:"
-while getopts "m:x:y:z:m:l:e:t" opt
+while getopts "m:x:y:z:m:l:e:t:d" opt
 do
 case $opt in
 m)
@@ -55,13 +57,25 @@ e)
 t)
         title = $OPTARG;
         echo "Setting ARM Plot Title to: $title";;
+d)
+	COPY = $OPTARG;
+	echo "Setting copy folder to: $COPY";;
+p)
+	PATH = $OPTARG;
+	echo "Setting the path of the data to: $PATH";;
 esac
 done
 
 
-PATHS=$($1)
-COPY=$($2)
+PATHS=""
+COPY=""
 Geometry="/home/andreas/Science/Software/Nuclearizer/MassModel/COSI.DetectorHead.geo.setup"
+#check all the inputs to see if they are reasonable. 
+#PATH and COPY must be valid inputs
+
+
+
+
 type nuclearizer >/dev/null 2>&1
 
 if [ $? -ne 0 ]; then
