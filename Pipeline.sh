@@ -74,7 +74,7 @@ done
 #PATH and COPY must be valid inputs
 
 
-
+nuclearizer --help
 
 type nuclearizer >/dev/null 2>&1
 
