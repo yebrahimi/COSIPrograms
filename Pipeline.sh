@@ -39,31 +39,31 @@ while getopts "m:x:y:z:m:l:e:t:d:p:" opt
 do
 case $opt in
 m)
-        minevents = $OPTARG;
+        minevents=$OPTARG;
         echo "* Running ARM Output with minimum events: $minevents";;
 x)
-        xcoord = $OPTARG;
+        xcoord=$OPTARG;
         echo "Setting x coordinate of source to: $xcoord";;
 y)
-        ycoord = $OPTARG;
+        ycoord=$OPTARG;
         echo "Setting y coordinate of source to: $ycoord";;
 z)
-        zcoord = $OPTARG;
+        zcoord=$OPTARG;
         echo "Setting z coordinate of source to: $zcoord";;
 l)
-        set_log = $OPTARG;
+        set_log=$OPTARG;
         echo "Use logarithmic scale on y axis of plot? $set_los";;
 e)      
-        energy = $OPTARG;
+        energy=$OPTARG;
         echo "Using energy peak value of: $energy";;
 t)
-        title = $OPTARG;
+        title=$OPTARG;
         echo "Setting ARM Plot Title to: $title";;
 d)
-	COPY = $OPTARG;
+	COPY=$OPTARG;
 	echo "Setting copy folder to: $COPY";;
 p)
-	PATH = $OPTARG;
+	PATH=$OPTARG;
 	echo "Setting the path of the data to: $PATH";;
 esac
 done
