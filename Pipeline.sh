@@ -18,11 +18,11 @@ Usage() {
         echo "-e <float>        Peak energy value for source" 	
 	echo "-t <str>          Title for ARM Plot" 
 	echo "-d <str>		Destination of Copy"
-	echo "-p <str>		Path of data"
+	echo "-o <str>		Origin of data"
 }	
 
 
-PATHS=""
+Origin=""
 COPY=""
 Geometry="/home/andreas/Science/Software/Nuclearizer/MassModel/COSI.DetectorHead.geo.setup"
 #Options for ARM Output which can be set via command line
@@ -62,9 +62,9 @@ t)
 d)
 	COPY=$OPTARG;
 	echo "Setting copy folder to: $COPY";;
-p)
-	PATH=$OPTARG;
-	echo "Setting the path of the data to: $PATH";;
+o)
+	Origin=$OPTARG;
+	echo "Setting the origin of the data to: $Origin";;
 esac
 done
 
@@ -74,7 +74,7 @@ done
 #PATH and COPY must be valid inputs
 
 
-nuclearizer --help
+
 
 type nuclearizer >/dev/null 2>&1
 
@@ -89,7 +89,7 @@ if [ $? -ne 0 ]; then
 fi
 # Step zero: Create list of runs:
 Runs=""
-Files=$(ls $PATHS/*.roa.gz)
+Files=$(ls $Origin/*.roa.gz)
 for File in ${Files}; do
   #cd /volumes/selene/users/yasaman/CopyData
   cd ${COPY}
