@@ -4,6 +4,22 @@
 #./filename.sh
 #chmod +x the_file_name
 
+Usage() {
+    	echo ""
+	echo "General:"
+	echo ""
+	echo "ARM Output program: needs filename"
+    	echo "-m <int>		Minimum number of events to use"
+        echo "-x <int>          X coordinate of position in 3D Cartesian coordinates" 	
+        echo "-y <int>          Y coordinate of position in 3D Cartesian coordinates" 
+        echo "-z <int>          Z coordinate of position in 3D Cartesian coordinates" 
+        echo "-m <int>          Minimum number of events to use"
+        echo "-l <str>          Displays ARM plot on logarithmic scale"
+        echo "-e <float>        Peak energy value for source" 	
+	echo "-t <str>          Title for ARM Plot" 
+}	
+
+
 PATHS=$($1)
 COPY=$($2)
 Geometry="/home/andreas/Science/Software/Nuclearizer/MassModel/COSI.DetectorHead.geo.setup"
