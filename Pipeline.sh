@@ -89,8 +89,8 @@ if [ $? -ne 0 ]; then
 fi
 # Step zero: Create list of runs:
 Runs=""
-#PATHS=$(ls /volumes/selene/COSI_2016/ER/Data/*.roa.gz)
-for File in ${PATHS}; do
+Files=$(ls $PATHS/*.roa.gz)
+for File in ${Files}; do
   #cd /volumes/selene/users/yasaman/CopyData
   cd ${COPY}
   if [ ! -f $(basename $File) ]; then
